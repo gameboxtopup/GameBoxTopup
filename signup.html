@@ -29,31 +29,54 @@ padding:30px;
 border-radius:20px;
 width:350px;
 text-align:center;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
-input,button{
+h1{
+color:#ff9800;
+margin-bottom:20px;
+}
+
+input{
 width:100%;
 padding:14px;
 margin-top:15px;
 border:none;
 border-radius:10px;
-}
-
-input{
 background:#0f172a;
 color:white;
+font-size:15px;
 }
 
 button{
-background:#ff9800;
-color:white;
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:10px;
 font-weight:bold;
 cursor:pointer;
+font-size:15px;
+}
+
+.signup-btn{
+background:#ff9800;
+color:white;
+}
+
+.google-btn{
+background:white;
+color:black;
 }
 
 a{
 color:#ff9800;
 text-decoration:none;
+}
+
+p{
+margin-top:20px;
+font-size:14px;
 }
 
 </style>
@@ -76,8 +99,20 @@ type="password"
 id="password"
 placeholder="Enter Password">
 
-<button onclick="signup()">
+<button
+class="signup-btn"
+onclick="signup()">
+
 Create Account
+
+</button>
+
+<button
+class="google-btn"
+onclick="googleSignup()">
+
+Continue With Google
+
 </button>
 
 <p>
@@ -100,7 +135,9 @@ from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
 getAuth,
 createUserWithEmailAndPassword,
-sendEmailVerification
+sendEmailVerification,
+GoogleAuthProvider,
+signInWithPopup
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
@@ -132,6 +169,14 @@ document.getElementById("email").value;
 const password =
 document.getElementById("password").value;
 
+if(email === "" || password === ""){
+
+alert("Fill all fields");
+
+return;
+
+}
+
 try{
 
 const userCredential =
@@ -148,6 +193,26 @@ userCredential.user
 alert("Verification email sent!");
 
 window.location.href = "/login.html";
+
+}
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+window.googleSignup = async function(){
+
+const provider =
+new GoogleAuthProvider();
+
+try{
+
+await signInWithPopup(auth,provider);
+
+window.location.href = "/";
 
 }
 catch(error){

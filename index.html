@@ -1,0 +1,115 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameBox Topup</title>
+
+<style>
+
+body{
+background:#0f172a;
+font-family:Arial;
+color:white;
+text-align:center;
+padding:20px;
+}
+
+.box{
+max-width:350px;
+margin:auto;
+background:#1e293b;
+padding:20px;
+border-radius:15px;
+}
+
+input,select,button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+}
+
+button{
+background:#ff9800;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+footer{
+margin-top:30px;
+}
+
+a{
+color:#ff9800;
+margin:10px;
+text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>GameBox Topup</h1>
+<p>Fast & Secure Free Fire Diamond Topup</p>
+
+<div class="box">
+
+<input type="text" id="uid" placeholder="Enter Free Fire UID">
+
+<select id="package">
+<option>100 Diamonds</option>
+<option>310 Diamonds</option>
+<option>520 Diamonds</option>
+<option>1060 Diamonds</option>
+</select>
+
+<button onclick="submitOrder()">
+Order Now
+</button>
+
+</div>
+
+<footer>
+
+<a href="https://wa.me/">WhatsApp</a>
+
+<a href="#">Instagram</a>
+
+<a href="#">Facebook</a>
+
+</footer>
+
+<script>
+
+function submitOrder(){
+
+const uid =
+document.getElementById("uid").value;
+
+const pack =
+document.getElementById("package").value;
+
+if(uid==""){
+alert("Please Enter UID");
+return;
+}
+
+alert(
+"Order Submitted Successfully!\n\nUID: "
++ uid +
+"\nPackage: " +
+pack
+);
+
+}
+
+</script>
+
+</body>
+</html>
+```

@@ -120,9 +120,39 @@ Instagram
 
 </div>
 
-<script>
+<script type="module">
 
-function submitOrder(){
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "YOUR_API_KEY",
+
+authDomain: "gamebox-58ca6.firebaseapp.com",
+
+projectId: "gamebox-58ca6",
+
+storageBucket: "gamebox-58ca6.firebasestorage.app",
+
+messagingSenderId: "562074668636",
+
+appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+window.submitOrder = async function(){
 
 const uid =
 document.getElementById("uid").value;
@@ -130,30 +160,47 @@ document.getElementById("uid").value;
 const pack =
 document.getElementById("package").value;
 
+const txn =
+document.getElementById("txn").value;
+
 const screenshot =
-document.getElementById("screenshot").files.length;
+document.getElementById("screenshot").files[0];
 
 if(uid==""){
 alert("Enter UID");
 return;
 }
 
-if(screenshot==0){
+if(txn==""){
+alert("Enter Transaction ID");
+return;
+}
+
+if(!screenshot){
 alert("Upload payment screenshot");
 return;
 }
 
-const message =
-`GameBox Topup Order%0A%0AUID: ${uid}%0APackage: ${pack}`;
+await addDoc(collection(db,"orders"),{
 
-window.open(
-`https://wa.me/9779708567948?text=${message}`,
-"_blank"
-);
+uid:uid,
+
+package:pack,
+
+transaction:txn,
+
+screenshot:screenshot.name,
+
+time:new Date()
+
+});
+
+alert("Order Submitted Successfully!");
 
 }
 
 </script>
+
 
 </body>
 </html>

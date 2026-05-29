@@ -29,6 +29,7 @@ padding:30px;
 border-radius:20px;
 width:350px;
 text-align:center;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
 h1{
@@ -49,13 +50,22 @@ box-sizing:border-box;
 input{
 background:#0f172a;
 color:white;
+outline:none;
 }
 
 button{
-background:#ff9800;
-color:white;
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+.email{
+background:#2563eb;
+color:white;
 }
 
 .google{
@@ -68,15 +78,18 @@ background:#22c55e;
 color:white;
 }
 
-.email{
-background:#2563eb;
-color:white;
-}
-
 .or{
 margin-top:20px;
+margin-bottom:5px;
 opacity:0.7;
 font-size:14px;
+}
+
+#error{
+color:#ff4d4d;
+font-size:14px;
+margin-top:10px;
+display:none;
 }
 
 </style>
@@ -98,6 +111,10 @@ placeholder="Enter Email">
 type="password"
 id="password"
 placeholder="Enter Password">
+
+<p id="error">
+Wrong Email Or Password
+</p>
 
 <button
 class="email"
@@ -176,7 +193,6 @@ signInWithEmailAndPassword
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-
 const firebaseConfig = {
 
 apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
@@ -200,22 +216,45 @@ const auth = getAuth(app);
 window.emailLogin = async function(){
 
 const email =
-document.getElementById("email").value;
+document.getElementById("email");
 
 const password =
-document.getElementById("password").value;
+document.getElementById("password");
 
-if(email.trim() === ""){
+const error =
+document.getElementById("error");
 
-alert("Enter Email");
+email.style.border = "none";
+
+password.style.border = "none";
+
+error.style.display = "none";
+
+if(email.value.trim() === ""){
+
+error.innerHTML =
+"Enter Email";
+
+error.style.display =
+"block";
+
+email.style.border =
+"2px solid red";
 
 return;
 
 }
 
-if(password.trim() === ""){
+if(password.value.trim() === ""){
 
-alert("Enter Password");
+error.innerHTML =
+"Enter Password";
+
+error.style.display =
+"block";
+
+password.style.border =
+"2px solid red";
 
 return;
 
@@ -225,44 +264,30 @@ try{
 
 await signInWithEmailAndPassword(
 auth,
-email,
-password
+email.value,
+password.value
 );
 
 window.location.href = "/";
 
 }
-catch(error){
+catch(err){
 
-if(error.code === "auth/invalid-email"){
+error.innerHTML =
+"Wrong Email Or Password";
 
-alert("Wrong Email");
+error.style.display =
+"block";
 
-}
-else if(
-error.code === "auth/user-not-found"
-){
+email.style.border =
+"2px solid red";
 
-alert("Account Not Found");
-
-}
-else if(
-error.code === "auth/wrong-password"
-){
-
-alert("Wrong Password");
-
-}
-else{
-
-alert(error.message);
+password.style.border =
+"2px solid red";
 
 }
 
 }
-
-}
-
 
 window.googleLogin = async function(){
 
@@ -271,14 +296,24 @@ new GoogleAuthProvider();
 
 try{
 
-await signInWithPopup(auth,provider);
+await signInWithPopup(
+auth,
+provider
+);
 
 window.location.href = "/";
 
 }
 catch(error){
 
-alert(error.message);
+document.getElementById(
+"error"
+).style.display = "block";
+
+document.getElementById(
+"error"
+).innerHTML =
+"Google Login Failed";
 
 }
 
@@ -321,7 +356,7 @@ alert("OTP Sent!");
 }
 catch(error){
 
-alert(error.message);
+alert("Invalid Phone Number");
 
 }
 
@@ -334,9 +369,9 @@ document.getElementById("otp").value;
 
 try{
 
-await window.confirmationResult.confirm(otp);
-
-alert("Login Successful!");
+await window.confirmationResult.confirm(
+otp
+);
 
 window.location.href = "/";
 

@@ -204,6 +204,22 @@ document.getElementById("email").value;
 const password =
 document.getElementById("password").value;
 
+if(email.trim() === ""){
+
+alert("Enter Email");
+
+return;
+
+}
+
+if(password.trim() === ""){
+
+alert("Enter Password");
+
+return;
+
+}
+
 try{
 
 await signInWithEmailAndPassword(
@@ -217,11 +233,35 @@ window.location.href = "/";
 }
 catch(error){
 
+if(error.code === "auth/invalid-email"){
+
+alert("Wrong Email");
+
+}
+else if(
+error.code === "auth/user-not-found"
+){
+
+alert("Account Not Found");
+
+}
+else if(
+error.code === "auth/wrong-password"
+){
+
+alert("Wrong Password");
+
+}
+else{
+
 alert(error.message);
 
 }
 
 }
+
+}
+
 
 window.googleLogin = async function(){
 

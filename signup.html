@@ -29,6 +29,7 @@ padding:30px;
 border-radius:20px;
 width:350px;
 text-align:center;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
 h1{
@@ -49,11 +50,17 @@ box-sizing:border-box;
 input{
 background:#0f172a;
 color:white;
+outline:none;
 }
 
 button{
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+opacity:0.9;
 }
 
 .signup{
@@ -73,20 +80,22 @@ color:white;
 
 .or{
 margin-top:20px;
+margin-bottom:10px;
 opacity:0.7;
 font-size:14px;
 }
 
 #error{
 color:#ff4d4d;
+font-size:14px;
 margin-top:10px;
 display:none;
-font-size:14px;
 }
 
 a{
 color:#ff9800;
 text-decoration:none;
+font-weight:bold;
 }
 
 </style>
@@ -233,6 +242,38 @@ document.getElementById("error");
 
 error.style.display = "none";
 
+email.style.border = "none";
+
+password.style.border = "none";
+
+if(email.value.trim() === ""){
+
+error.style.display = "block";
+
+error.innerHTML =
+"Enter Email";
+
+email.style.border =
+"2px solid red";
+
+return;
+
+}
+
+if(password.value.length < 6){
+
+error.style.display = "block";
+
+error.innerHTML =
+"Password must be 6+ characters";
+
+password.style.border =
+"2px solid red";
+
+return;
+
+}
+
 try{
 
 await createUserWithEmailAndPassword(
@@ -242,16 +283,24 @@ password.value
 );
 
 window.location.href =
-"/";
+"/login.html";
 
 }
 catch(err){
+
+console.log(err);
 
 error.style.display =
 "block";
 
 error.innerHTML =
-"Failed To Create Account";
+err.message;
+
+email.style.border =
+"2px solid red";
+
+password.style.border =
+"2px solid red";
 
 }
 
@@ -324,7 +373,7 @@ alert("OTP Sent!");
 }
 catch(error){
 
-alert("Invalid Phone Number");
+alert(error.message);
 
 }
 

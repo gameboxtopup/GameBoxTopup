@@ -121,7 +121,6 @@ Instagram
 
 </div>
 
-
 <script type="module">
 
 import { initializeApp }
@@ -177,13 +176,32 @@ return;
 
 try{
 
+const formData = new FormData();
+
+formData.append("file", screenshot);
+
+formData.append("upload_preset", "gamebox");
+
+const response = await fetch(
+
+"https://api.cloudinary.com/v1_1/dsfhvnlqw/image/upload",
+
+{
+method:"POST",
+body:formData
+}
+
+);
+
+const data = await response.json();
+
 await addDoc(collection(db,"orders"),{
 
 uid: uid,
 
 package: pack,
 
-screenshot: screenshot.name,
+screenshot: data.secure_url,
 
 time: new Date()
 
@@ -262,6 +280,7 @@ alert(error.message);
 }
 
 </script>
+
 
 </body>
 </html>

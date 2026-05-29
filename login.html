@@ -363,7 +363,9 @@ alert("OTP Sent!");
 }
 catch(error){
 
-alert("Invalid Phone Number");
+console.log(error);
+
+alert(error.message);
 
 }
 

@@ -126,6 +126,25 @@ Login With Email
 </button>
 
 
+<p style="margin-top:15px;">
+
+<a
+href="#"
+onclick="forgotPassword()"
+
+style="
+
+color:#ff9800;
+text-decoration:none;
+
+">
+
+Forgot Password?
+
+</a>
+
+</p>
+
 
 <p style="margin-top:15px;font-size:14px;">
 
@@ -212,9 +231,11 @@ GoogleAuthProvider,
 signInWithPopup,
 RecaptchaVerifier,
 signInWithPhoneNumber,
-signInWithEmailAndPassword
+signInWithEmailAndPassword,
+sendPasswordResetEmail
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
 
 const firebaseConfig = {
 
@@ -294,6 +315,7 @@ password.value
 window.location.href = "/";
 
 }
+
 catch(err){
 
 error.innerHTML =
@@ -312,7 +334,83 @@ password.style.border =
 
 }
 
+window.forgotPassword = async function(){
+
+const email =
+document.getElementById("email").value;
+
+if(email.trim() === ""){
+
+alert("Enter your email first");
+
+return;
+
+}
+
+try{
+
+await sendPasswordResetEmail(
+auth,
+email
+);
+
+alert(
+"Password reset email sent!"
+);
+
+}
+catch(error){
+
+alert(
+"Failed to send reset email"
+);
+
+}
+
+}
+
 window.googleLogin = async function(){
+
+
+
+
+
+window.forgotPassword = async function(){
+
+const email =
+document.getElementById("email").value;
+
+if(email.trim() === ""){
+
+alert("Enter your email first");
+
+return;
+
+}
+
+try{
+
+await sendPasswordResetEmail(
+auth,
+email
+);
+
+alert(
+"Password reset email sent!"
+);
+
+}
+catch(error){
+
+alert(
+"Failed to send reset email"
+);
+
+}
+
+}
+
+
 
 const provider =
 new GoogleAuthProvider();

@@ -99,9 +99,13 @@ border-radius:10px;
 <input type="file" id="screenshot" required>
 
 <p style="font-size:13px;color:#ff9800;margin-top:8px;">
-Enter Payment Screenshot
+Enter Payment Screenshot^
 </p>
+<p style="font-size:13px;color:#ff4d4d;margin-top:15px;">
 
+NOTE: If you upload wrong screenshot of payment or entered wrong UID, contact on WhatsApp otherwise there will be no topup on your ID.
+
+</p>
 <button onclick="submitOrder()">
 Submit Order
 </button>
@@ -123,6 +127,7 @@ Instagram
 </div>
 
 </div>
+
 
 <script type="module">
 
@@ -164,9 +169,6 @@ document.getElementById("uid").value;
 const pack =
 document.getElementById("package").value;
 
-const txn =
-document.getElementById("txn").value;
-
 const screenshot =
 document.getElementById("screenshot").files[0];
 
@@ -175,23 +177,18 @@ alert("Enter UID");
 return;
 }
 
-if(txn==""){
-alert("Enter Transaction ID");
-return;
-}
-
 if(!screenshot){
 alert("Upload payment screenshot");
 return;
 }
+
+try{
 
 await addDoc(collection(db,"orders"),{
 
 uid:uid,
 
 package:pack,
-
-transaction:txn,
 
 screenshot:screenshot.name,
 
@@ -200,6 +197,13 @@ time:new Date()
 });
 
 alert("Order Submitted Successfully!");
+
+}
+catch(error){
+
+alert("Error: " + error.message);
+
+}
 
 }
 

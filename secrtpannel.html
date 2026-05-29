@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameBox Admin</title>
+
+<style>
+
+body{
+background:#0f172a;
+font-family:Arial;
+color:white;
+padding:20px;
+}
+
+h1{
+text-align:center;
+color:#ff9800;
+margin-bottom:30px;
+}
+
+.orders{
+display:grid;
+gap:15px;
+max-width:700px;
+margin:auto;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:15px;
+}
+
+.card p{
+margin:8px 0;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>GameBox Orders</h1>
+
+<div class="orders" id="orders">
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
+
+authDomain: "gamebox-58ca6.firebaseapp.com",
+
+projectId: "gamebox-58ca6",
+
+storageBucket: "gamebox-58ca6.firebasestorage.app",
+
+messagingSenderId: "562074668636",
+
+appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+const ordersDiv =
+document.getElementById("orders");
+
+async function loadOrders(){
+
+const querySnapshot =
+await getDocs(collection(db,"orders"));
+
+querySnapshot.forEach((doc)=>{
+
+const data = doc.data();
+
+ordersDiv.innerHTML += `
+
+<div class="card">
+
+<p><b>UID:</b> ${data.uid}</p>
+
+<p><b>Package:</b> ${data.package}</p>
+
+<p><b>Screenshot:</b> ${data.screenshot}</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+loadOrders();
+
+</script>
+
+</body>
+</html>
+

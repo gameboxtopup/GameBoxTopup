@@ -373,16 +373,13 @@ window.googleLogin = async function(){
 
 
 
-
-
 window.forgotPassword = async function(){
 
-const email =
-document.getElementById("email").value;
+const email = prompt(
+"Enter your email address"
+);
 
-if(email.trim() === ""){
-
-alert("Enter your email first");
+if(!email){
 
 return;
 
@@ -396,20 +393,19 @@ email
 );
 
 alert(
-"Password reset email sent!"
+"Password reset link sent to your email"
 );
 
 }
 catch(error){
 
 alert(
-"Failed to send reset email"
+"Invalid email or account not found"
 );
 
 }
 
 }
-
 
 
 const provider =

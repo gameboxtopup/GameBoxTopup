@@ -71,10 +71,18 @@ border-radius:10px;
 </head>
 
 <body>
+
 <script type="module">
 
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 import {
 getAuth,
@@ -101,6 +109,8 @@ appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
 
 const app = initializeApp(firebaseConfig);
 
+const db = getFirestore(app);
+
 const auth = getAuth(app);
 
 onAuthStateChanged(auth,(user)=>{
@@ -118,104 +128,6 @@ window.logout = function(){
 signOut(auth);
 
 }
-
-</script>
-
-<div class="container">
-<button onclick="logout()"
-
-style="
-
-width:auto;
-padding:10px 15px;
-background:red;
-float:right;
-margin-top:-10px;
-
-">
-
-Logout
-
-</button>
-
-<h1>GameBox Topup</h1>
-
-<p>Fast & Secure Free Fire Topup</p>
-
-<input type="text" id="uid" placeholder="Enter Free Fire UID">
-
-<select id="package">
-<option>100 Diamonds - Rs 130</option>
-<option>310 Diamonds - Rs 400</option>
-<option>520 Diamonds - Rs 650</option>
-<option>1060 Diamonds - Rs 1250</option>
-<option>Weekly Membership - Rs 200</option>
-</select>
-
-<div class="qr">
-
-<h3>Scan & Pay</h3>
-
-<img src="imahges/qr.jpg" alt="QR Payment">
-
-</div>
-
-<input type="file" id="screenshot" required>
-
-<p style="font-size:13px;color:#ff9800;margin-top:8px;">
-Enter Payment Screenshot^
-</p>
-<p style="font-size:13px;color:#ff4d4d;margin-top:15px;line-height:20px;"> NOTE: If you upload wrong screenshot of payment or entered wrong UID, contact on WhatsApp otherwise there will be no topup on your ID. </p>
-<button type="button" onclick="submitOrder()"> Submit Order </button>
-<div class="socials">
-
-<a href="https://wa.me/9779708567948">
-WhatsApp
-</a>
-
-<a href="https://www.facebook.com/NirmalChettri9814">
-Facebook
-</a>
-
-<a href="https://www.instagram.com/nirmalkathayat21/">
-Instagram
-</a>
-
-</div>
-
-</div>
-
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-
-import {
-getFirestore,
-collection,
-addDoc
-}
-from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
-const firebaseConfig = {
-
-apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
-
-authDomain: "gamebox-58ca6.firebaseapp.com",
-
-projectId: "gamebox-58ca6",
-
-storageBucket: "gamebox-58ca6.firebasestorage.app",
-
-messagingSenderId: "562074668636",
-
-appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
 
 window.submitOrder = async function(){
 
@@ -364,6 +276,74 @@ alert(error.message);
 }
 
 </script>
+
+
+
+<div class="container">
+<button onclick="logout()"
+
+style="
+
+width:auto;
+padding:10px 15px;
+background:red;
+float:right;
+margin-top:-10px;
+
+">
+
+Logout
+
+</button>
+
+<h1>GameBox Topup</h1>
+
+<p>Fast & Secure Free Fire Topup</p>
+
+<input type="text" id="uid" placeholder="Enter Free Fire UID">
+
+<select id="package">
+<option>100 Diamonds - Rs 130</option>
+<option>310 Diamonds - Rs 400</option>
+<option>520 Diamonds - Rs 650</option>
+<option>1060 Diamonds - Rs 1250</option>
+<option>Weekly Membership - Rs 200</option>
+</select>
+
+<div class="qr">
+
+<h3>Scan & Pay</h3>
+
+<img src="imahges/qr.jpg" alt="QR Payment">
+
+</div>
+
+<input type="file" id="screenshot" required>
+
+<p style="font-size:13px;color:#ff9800;margin-top:8px;">
+Enter Payment Screenshot^
+</p>
+<p style="font-size:13px;color:#ff4d4d;margin-top:15px;line-height:20px;"> NOTE: If you upload wrong screenshot of payment or entered wrong UID, contact on WhatsApp otherwise there will be no topup on your ID. </p>
+<button type="button" onclick="submitOrder()"> Submit Order </button>
+<div class="socials">
+
+<a href="https://wa.me/9779708567948">
+WhatsApp
+</a>
+
+<a href="https://www.facebook.com/NirmalChettri9814">
+Facebook
+</a>
+
+<a href="https://www.instagram.com/nirmalkathayat21/">
+Instagram
+</a>
+
+</div>
+
+</div>
+
+
 
 
 </body>

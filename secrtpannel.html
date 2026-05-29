@@ -57,7 +57,7 @@ from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
 getFirestore,
 collection,
-getDocs
+onSnapshot
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -84,12 +84,11 @@ const db = getFirestore(app);
 const ordersDiv =
 document.getElementById("orders");
 
-async function loadOrders(){
+onSnapshot(collection(db,"orders"),(snapshot)=>{
 
-const querySnapshot =
-await getDocs(collection(db,"orders"));
+ordersDiv.innerHTML = "";
 
-querySnapshot.forEach((doc)=>{
+snapshot.forEach((doc)=>{
 
 const data = doc.data();
 
@@ -101,7 +100,23 @@ ordersDiv.innerHTML += `
 
 <p><b>Package:</b> ${data.package}</p>
 
-<a href="${data.screenshot}" target="_blank" style=" display:inline-block; margin-top:10px; padding:10px 15px; background:#ff9800; color:white; text-decoration:none; border-radius:10px; "> Open Screenshot </a>
+<a href="${data.screenshot}" target="_blank"
+
+style="
+
+display:inline-block;
+margin-top:10px;
+padding:10px 15px;
+background:#ff9800;
+color:white;
+text-decoration:none;
+border-radius:10px;
+
+">
+
+Open Screenshot
+
+</a>
 
 </div>
 
@@ -109,9 +124,7 @@ ordersDiv.innerHTML += `
 
 });
 
-}
-
-loadOrders();
+});
 
 </script>
 

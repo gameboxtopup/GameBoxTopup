@@ -127,6 +127,9 @@ function submitOrder(){
 const uid =
 document.getElementById("uid").value;
 
+const pack =
+document.getElementById("package").value;
+
 const screenshot =
 document.getElementById("screenshot").files.length;
 
@@ -140,7 +143,13 @@ alert("Upload payment screenshot");
 return;
 }
 
-alert("Order Submitted Successfully!");
+const message =
+`GameBox Topup Order%0A%0AUID: ${uid}%0APackage: ${pack}`;
+
+window.open(
+`https://wa.me/9779708567948?text=${message}`,
+"_blank"
+);
 
 }
 

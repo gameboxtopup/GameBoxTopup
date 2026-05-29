@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GameBox Signup</title>
+
+<style>
+
+body{
+background:#0f172a;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+color:white;
+}
+
+.box{
+background:#1e293b;
+padding:30px;
+border-radius:20px;
+width:350px;
+text-align:center;
+}
+
+input,button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+}
+
+input{
+background:#0f172a;
+color:white;
+}
+
+button{
+background:#ff9800;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+a{
+color:#ff9800;
+text-decoration:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>Create Account</h1>
+
+<input
+type="email"
+id="email"
+placeholder="Enter Email">
+
+<input
+type="password"
+id="password"
+placeholder="Enter Password">
+
+<button onclick="signup()">
+Create Account
+</button>
+
+<p>
+
+Already have account?
+
+<a href="/login.html">
+Login
+</a>
+
+</p>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getAuth,
+createUserWithEmailAndPassword,
+sendEmailVerification
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
+
+authDomain: "gamebox-58ca6.firebaseapp.com",
+
+projectId: "gamebox-58ca6",
+
+storageBucket: "gamebox-58ca6.firebasestorage.app",
+
+messagingSenderId: "562074668636",
+
+appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+window.signup = async function(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+try{
+
+const userCredential =
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+await sendEmailVerification(
+userCredential.user
+);
+
+alert("Verification email sent!");
+
+window.location.href = "/login.html";
+
+}
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

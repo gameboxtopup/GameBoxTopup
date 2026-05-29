@@ -165,6 +165,50 @@ Create Account
 </a>
 
 </p>
+```html
+<p style="margin-top:15px;">
+
+<a
+href="#"
+onclick="forgotPassword()"
+
+style="
+
+color:#ff9800;
+text-decoration:none;
+
+">
+
+Forgot Password?
+
+</a>
+
+</p>
+
+
+<div id="resetBox" style="display:none;margin-top:20px;">
+
+<input
+type="email"
+id="resetEmail"
+placeholder="Enter Your Email">
+
+<button
+onclick="sendReset()"
+style="background:#ff9800;color:white;">
+
+Send Reset Link
+
+</button>
+
+<p
+id="resetMsg"
+style="margin-top:10px;color:#22c55e;font-size:14px;">
+</p>
+
+</div>
+
+
 
 <div class="or">
 

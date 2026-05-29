@@ -90,6 +90,20 @@ Continue With Google
 
 </button>
 
+
+<button
+class="phone"
+onclick="openPhoneLogin()">
+
+Continue With Phone Number
+
+</button>
+
+<div
+id="phoneBox"
+
+style="display:none;">
+
 <input
 type="text"
 id="phone"
@@ -98,10 +112,9 @@ placeholder="+97798XXXXXXXX">
 <div id="recaptcha-container"></div>
 
 <button
-class="phone"
 onclick="sendOTP()">
 
-Continue With Phone Number
+Send OTP
 
 </button>
 
@@ -110,11 +123,14 @@ type="text"
 id="otp"
 placeholder="Enter OTP">
 
-<button onclick="verifyOTP()">
+<button
+onclick="verifyOTP()">
 
 Verify OTP
 
 </button>
+
+</div>
 
 </div>
 
@@ -178,6 +194,14 @@ auth,
 "recaptcha-container",
 {}
 );
+
+window.openPhoneLogin = function(){
+
+document.getElementById(
+"phoneBox"
+).style.display = "block";
+
+}
 
 window.sendOTP = async function(){
 

@@ -1,7 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<title>Login</title>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GameBox Login</title>
 
 <style>
 
@@ -24,12 +31,18 @@ width:350px;
 text-align:center;
 }
 
+h1{
+color:#ff9800;
+margin-bottom:25px;
+}
+
 input,button{
 width:100%;
 padding:14px;
 margin-top:15px;
 border:none;
 border-radius:10px;
+font-size:15px;
 }
 
 input{
@@ -49,36 +62,59 @@ background:white;
 color:black;
 }
 
+.phone{
+background:#22c55e;
+color:white;
+}
+
 a{
 color:#ff9800;
 text-decoration:none;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="box">
 
-<h1>Login</h1>
+<h1>GameBox Login</h1>
 
-<input type="email" id="email" placeholder="Enter Email">
+<button
+class="google"
+onclick="googleLogin()">
 
-<input type="password" id="password" placeholder="Enter Password">
-
-<button onclick="login()">
-Login
-</button>
-
-<button class="google" onclick="googleLogin()">
 Continue With Google
+
 </button>
 
-<p>
-No account?
-<a href="/signup.html">Create Account</a>
-</p>
+<input
+type="text"
+id="phone"
+placeholder="+97798XXXXXXXX">
+
+<div id="recaptcha-container"></div>
+
+<button
+class="phone"
+onclick="sendOTP()">
+
+Continue With Phone Number
+
+</button>
+
+<input
+type="text"
+id="otp"
+placeholder="Enter OTP">
+
+<button onclick="verifyOTP()">
+
+Verify OTP
+
+</button>
 
 </div>
 
@@ -89,9 +125,10 @@ from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
 getAuth,
-signInWithEmailAndPassword,
 GoogleAuthProvider,
-signInWithPopup
+signInWithPopup,
+RecaptchaVerifier,
+signInWithPhoneNumber
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
@@ -115,33 +152,6 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-window.login = async function(){
-
-const email =
-document.getElementById("email").value;
-
-const password =
-document.getElementById("password").value;
-
-try{
-
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-window.location.href = "/";
-
-}
-catch(error){
-
-alert(error.message);
-
-}
-
-}
-
 window.googleLogin = async function(){
 
 const provider =
@@ -162,7 +172,65 @@ alert(error.message);
 
 }
 
+window.recaptchaVerifier =
+new RecaptchaVerifier(
+auth,
+"recaptcha-container",
+{}
+);
+
+window.sendOTP = async function(){
+
+const phone =
+document.getElementById("phone").value;
+
+try{
+
+const confirmationResult =
+await signInWithPhoneNumber(
+auth,
+phone,
+window.recaptchaVerifier
+);
+
+window.confirmationResult =
+confirmationResult;
+
+alert("OTP Sent!");
+
+}
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+window.verifyOTP = async function(){
+
+const otp =
+document.getElementById("otp").value;
+
+try{
+
+await window.confirmationResult.confirm(otp);
+
+alert("Login Successful!");
+
+window.location.href = "/";
+
+}
+catch(error){
+
+alert("Wrong OTP");
+
+}
+
+}
+
 </script>
 
 </body>
+
 </html>

@@ -135,7 +135,6 @@ from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
 getAuth,
 createUserWithEmailAndPassword,
-sendEmailVerification,
 GoogleAuthProvider,
 signInWithPopup
 }
@@ -186,11 +185,7 @@ email,
 password
 );
 
-await sendEmailVerification(
-userCredential.user
-);
-
-alert("Verification email sent!");
+alert("Account Created Successfully!");
 
 window.location.href = "/login.html";
 

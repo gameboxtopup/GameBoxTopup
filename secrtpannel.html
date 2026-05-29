@@ -54,7 +54,6 @@ margin:8px 0;
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
-id="u6m4p1"
 import {
 getFirestore,
 collection,
@@ -62,7 +61,6 @@ onSnapshot,
 deleteDoc,
 doc
 }
-
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -92,9 +90,9 @@ onSnapshot(collection(db,"orders"),(snapshot)=>{
 
 ordersDiv.innerHTML = "";
 
-snapshot.forEach((doc)=>{
+snapshot.forEach((orderDoc)=>{
 
-const data = doc.data();
+const data = orderDoc.data();
 
 ordersDiv.innerHTML += `
 
@@ -122,6 +120,25 @@ Open Screenshot
 
 </a>
 
+<button onclick="deleteOrder('${orderDoc.id}')"
+
+style="
+
+display:block;
+margin-top:10px;
+padding:10px 15px;
+background:red;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+
+">
+
+Completed / Delete
+
+</button>
+
 </div>
 
 `;
@@ -130,7 +147,14 @@ Open Screenshot
 
 });
 
+window.deleteOrder = async function(id){
+
+await deleteDoc(doc(db,"orders",id));
+
+}
+
 </script>
+
 
 </body>
 </html>

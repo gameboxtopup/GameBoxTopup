@@ -29,54 +29,64 @@ padding:30px;
 border-radius:20px;
 width:350px;
 text-align:center;
-box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
 h1{
 color:#ff9800;
-margin-bottom:20px;
+margin-bottom:25px;
+}
+
+input,button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+font-size:15px;
+box-sizing:border-box;
 }
 
 input{
-width:100%;
-padding:14px;
-margin-top:15px;
-border:none;
-border-radius:10px;
 background:#0f172a;
 color:white;
-font-size:15px;
 }
 
 button{
-width:100%;
-padding:14px;
-margin-top:15px;
-border:none;
-border-radius:10px;
 font-weight:bold;
 cursor:pointer;
-font-size:15px;
 }
 
-.signup-btn{
-background:#ff9800;
+.signup{
+background:#22c55e;
 color:white;
 }
 
-.google-btn{
+.google{
 background:white;
 color:black;
+}
+
+.phone{
+background:#2563eb;
+color:white;
+}
+
+.or{
+margin-top:20px;
+opacity:0.7;
+font-size:14px;
+}
+
+#error{
+color:#ff4d4d;
+margin-top:10px;
+display:none;
+font-size:14px;
 }
 
 a{
 color:#ff9800;
 text-decoration:none;
-}
-
-p{
-margin-top:20px;
-font-size:14px;
 }
 
 </style>
@@ -99,28 +109,76 @@ type="password"
 id="password"
 placeholder="Enter Password">
 
+<p id="error"></p>
+
 <button
-class="signup-btn"
+class="signup"
 onclick="signup()">
 
 Create Account
 
 </button>
 
+<div class="or">
+
+OR
+
+</div>
+
 <button
-class="google-btn"
+class="google"
 onclick="googleSignup()">
 
 Continue With Google
 
 </button>
 
-<p>
+<button
+class="phone"
+onclick="openPhoneSignup()">
+
+Continue With Phone Number
+
+</button>
+
+<div
+id="phoneBox"
+style="display:none;">
+
+<input
+type="text"
+id="phone"
+placeholder="+97798XXXXXXXX">
+
+<div id="recaptcha-container"></div>
+
+<button onclick="sendOTP()">
+
+Send OTP
+
+</button>
+
+<input
+type="text"
+id="otp"
+placeholder="Enter OTP">
+
+<button onclick="verifyOTP()">
+
+Verify OTP
+
+</button>
+
+</div>
+
+<p style="margin-top:20px;">
 
 Already have account?
 
 <a href="/login.html">
+
 Login
+
 </a>
 
 </p>
@@ -136,7 +194,9 @@ import {
 getAuth,
 createUserWithEmailAndPassword,
 GoogleAuthProvider,
-signInWithPopup
+signInWithPopup,
+RecaptchaVerifier,
+signInWithPhoneNumber
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
@@ -163,36 +223,35 @@ const auth = getAuth(app);
 window.signup = async function(){
 
 const email =
-document.getElementById("email").value;
+document.getElementById("email");
 
 const password =
-document.getElementById("password").value;
+document.getElementById("password");
 
-if(email === "" || password === ""){
+const error =
+document.getElementById("error");
 
-alert("Fill all fields");
-
-return;
-
-}
+error.style.display = "none";
 
 try{
 
-const userCredential =
 await createUserWithEmailAndPassword(
 auth,
-email,
-password
+email.value,
+password.value
 );
 
-alert("Account Created Successfully!");
-
-window.location.href = "/login.html";
+window.location.href =
+"/";
 
 }
-catch(error){
+catch(err){
 
-alert(error.message);
+error.style.display =
+"block";
+
+error.innerHTML =
+"Failed To Create Account";
 
 }
 
@@ -205,14 +264,89 @@ new GoogleAuthProvider();
 
 try{
 
-await signInWithPopup(auth,provider);
+await signInWithPopup(
+auth,
+provider
+);
 
 window.location.href = "/";
 
 }
 catch(error){
 
-alert(error.message);
+document.getElementById(
+"error"
+).style.display = "block";
+
+document.getElementById(
+"error"
+).innerHTML =
+"Google Signup Failed";
+
+}
+
+}
+
+window.openPhoneSignup = function(){
+
+document.getElementById(
+"phoneBox"
+).style.display = "block";
+
+}
+
+window.recaptchaVerifier =
+new RecaptchaVerifier(
+auth,
+"recaptcha-container",
+{}
+);
+
+window.sendOTP = async function(){
+
+const phone =
+document.getElementById("phone").value;
+
+try{
+
+const confirmationResult =
+await signInWithPhoneNumber(
+auth,
+phone,
+window.recaptchaVerifier
+);
+
+window.confirmationResult =
+confirmationResult;
+
+alert("OTP Sent!");
+
+}
+catch(error){
+
+alert("Invalid Phone Number");
+
+}
+
+}
+
+window.verifyOTP = async function(){
+
+const otp =
+document.getElementById("otp").value;
+
+try{
+
+await window.confirmationResult.confirm(
+otp
+);
+
+window.location.href = "/";
+
+}
+catch(error){
+
+alert("Wrong OTP");
 
 }
 

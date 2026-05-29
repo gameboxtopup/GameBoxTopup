@@ -101,15 +101,8 @@ border-radius:10px;
 <p style="font-size:13px;color:#ff9800;margin-top:8px;">
 Enter Payment Screenshot^
 </p>
-<p style="font-size:13px;color:#ff4d4d;margin-top:15px;">
-
-NOTE: If you upload wrong screenshot of payment or entered wrong UID, contact on WhatsApp otherwise there will be no topup on your ID.
-
-</p>
-<button onclick="submitOrder()">
-Submit Order
-</button>
-
+<p style="font-size:13px;color:#ff4d4d;margin-top:15px;line-height:20px;"> NOTE: If you upload wrong screenshot of payment or entered wrong UID, contact on WhatsApp otherwise there will be no topup on your ID. </p>
+<button type="button" onclick="submitOrder()"> Submit Order </button>
 <div class="socials">
 
 <a href="https://wa.me/9779708567948">
@@ -172,7 +165,7 @@ document.getElementById("package").value;
 const screenshot =
 document.getElementById("screenshot").files[0];
 
-if(uid==""){
+if(uid.trim()==""){
 alert("Enter UID");
 return;
 }
@@ -186,13 +179,13 @@ try{
 
 await addDoc(collection(db,"orders"),{
 
-uid:uid,
+uid: uid,
 
-package:pack,
+package: pack,
 
-screenshot:screenshot.name,
+screenshot: screenshot.name,
 
-time:new Date()
+time: new Date()
 
 });
 
@@ -201,14 +194,13 @@ alert("Order Submitted Successfully!");
 }
 catch(error){
 
-alert("Error: " + error.message);
+alert(error.message);
 
 }
 
 }
 
 </script>
-
 
 </body>
 </html>

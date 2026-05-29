@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,124 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GameBox Topup</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
 body{
-background:linear-gradient(135deg,#0f172a,#1e293b);
+background:#0f172a;
+font-family:Arial;
 color:white;
-min-height:100vh;
 padding:20px;
-}
-
-header{
 text-align:center;
-margin-top:20px;
-}
-
-header h1{
-font-size:40px;
-color:#ff9800;
-}
-
-header p{
-opacity:0.8;
-margin-top:10px;
 }
 
 .container{
 max-width:400px;
-margin:40px auto;
+margin:auto;
 background:#1e293b;
-padding:25px;
+padding:20px;
 border-radius:20px;
-box-shadow:0 0 25px rgba(0,0,0,0.5);
-animation:fade 1s ease;
 }
 
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+h1{
+color:#ff9800;
 }
 
-input,select{
+input,select,button{
 width:100%;
 padding:14px;
 margin-top:15px;
 border:none;
-border-radius:12px;
+border-radius:10px;
+}
+
+input,select{
 background:#0f172a;
 color:white;
-font-size:15px;
 }
 
 button{
-width:100%;
-padding:14px;
-margin-top:20px;
-border:none;
-border-radius:12px;
 background:#ff9800;
 color:white;
-font-size:16px;
 font-weight:bold;
 cursor:pointer;
-transition:0.3s;
 }
 
-button:hover{
-transform:scale(1.03);
-}
-
-.packages{
+.qr{
 margin-top:20px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
 }
 
-.card{
-background:#0f172a;
-padding:15px;
-border-radius:12px;
-text-align:center;
-transition:0.3s;
-}
-
-.card:hover{
-background:#ff9800;
-}
-
-.payment{
-margin-top:25px;
-background:#0f172a;
-padding:15px;
-border-radius:12px;
-}
-
-.payment img{
+.qr img{
 width:100%;
-border-radius:12px;
-margin-top:10px;
-}
-
-.socials{
-margin-top:30px;
-text-align:center;
+border-radius:10px;
 }
 
 .socials a{
@@ -131,30 +61,22 @@ display:inline-block;
 margin:10px;
 padding:10px 15px;
 background:#ff9800;
-border-radius:10px;
 color:white;
 text-decoration:none;
-font-weight:bold;
-}
-
-footer{
-margin-top:40px;
-text-align:center;
-opacity:0.7;
-font-size:14px;
+border-radius:10px;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<header>
-<h1>GameBox Topup</h1>
-<p>Fast & Secure Free Fire Diamond Topup</p>
-</header>
-
 <div class="container">
+
+<h1>GameBox Topup</h1>
+
+<p>Fast & Secure Free Fire Topup</p>
 
 <input type="text" id="uid" placeholder="Enter Free Fire UID">
 
@@ -166,42 +88,37 @@ font-size:14px;
 <option>Weekly Membership</option>
 </select>
 
-<div class="packages">
+<div class="qr">
 
-<div class="card">100 💎</div>
-<div class="card">310 💎</div>
-<div class="card">520 💎</div>
-<div class="card">1060 💎</div>
+<h3>Scan & Pay</h3>
+
+<img src="qr.jpg" alt="QR Payment">
 
 </div>
+
+<input type="file" id="screenshot" required>
 
 <button onclick="submitOrder()">
-Order Now
+Submit Order
 </button>
-
-<div class="payment">
-
-<h3>Payment QR</h3>
-
-<p>Upload your eSewa QR image here later</p>
-
-</div>
 
 <div class="socials">
 
-<a href="https://wa.me/">WhatsApp</a>
+<a href="https://wa.me/9779708567948">
+WhatsApp
+</a>
 
-<a href="#">Instagram</a>
+<a href="https://www.facebook.com/NirmalChettri9814">
+Facebook
+</a>
 
-<a href="#">Facebook</a>
+<a href="https://www.instagram.com/nirmalkathayat21/">
+Instagram
+</a>
 
 </div>
 
 </div>
-
-<footer>
-© 2026 GameBox Topup
-</footer>
 
 <script>
 
@@ -210,20 +127,20 @@ function submitOrder(){
 const uid =
 document.getElementById("uid").value;
 
-const pack =
-document.getElementById("package").value;
+const screenshot =
+document.getElementById("screenshot").files.length;
 
 if(uid==""){
-alert("Please Enter UID");
+alert("Enter UID");
 return;
 }
 
-alert(
-"Order Submitted Successfully!\n\nUID: "
-+ uid +
-"\nPackage: " +
-pack
-);
+if(screenshot==0){
+alert("Upload payment screenshot");
+return;
+}
+
+alert("Order Submitted Successfully!");
 
 }
 
@@ -231,4 +148,4 @@ pack
 
 </body>
 </html>
-```
+

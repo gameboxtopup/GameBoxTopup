@@ -6,47 +6,142 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GameBox Topup</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
 
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
 body{
-background:#0f172a;
-font-family:Arial;
+background:linear-gradient(135deg,#0f172a,#1e293b);
 color:white;
+min-height:100vh;
+padding:20px;
+}
+
+header{
 text-align:center;
-padding:20px;
+margin-top:20px;
 }
 
-.box{
-max-width:350px;
-margin:auto;
+header h1{
+font-size:40px;
+color:#ff9800;
+}
+
+header p{
+opacity:0.8;
+margin-top:10px;
+}
+
+.container{
+max-width:400px;
+margin:40px auto;
 background:#1e293b;
-padding:20px;
-border-radius:15px;
+padding:25px;
+border-radius:20px;
+box-shadow:0 0 25px rgba(0,0,0,0.5);
+animation:fade 1s ease;
 }
 
-input,select,button{
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+input,select{
 width:100%;
-padding:12px;
+padding:14px;
 margin-top:15px;
 border:none;
-border-radius:10px;
+border-radius:12px;
+background:#0f172a;
+color:white;
+font-size:15px;
 }
 
 button{
+width:100%;
+padding:14px;
+margin-top:20px;
+border:none;
+border-radius:12px;
 background:#ff9800;
 color:white;
+font-size:16px;
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.03);
+}
+
+.packages{
+margin-top:20px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+
+.card{
+background:#0f172a;
+padding:15px;
+border-radius:12px;
+text-align:center;
+transition:0.3s;
+}
+
+.card:hover{
+background:#ff9800;
+}
+
+.payment{
+margin-top:25px;
+background:#0f172a;
+padding:15px;
+border-radius:12px;
+}
+
+.payment img{
+width:100%;
+border-radius:12px;
+margin-top:10px;
+}
+
+.socials{
+margin-top:30px;
+text-align:center;
+}
+
+.socials a{
+display:inline-block;
+margin:10px;
+padding:10px 15px;
+background:#ff9800;
+border-radius:10px;
+color:white;
+text-decoration:none;
+font-weight:bold;
 }
 
 footer{
-margin-top:30px;
-}
-
-a{
-color:#ff9800;
-margin:10px;
-text-decoration:none;
+margin-top:40px;
+text-align:center;
+opacity:0.7;
+font-size:14px;
 }
 
 </style>
@@ -54,10 +149,12 @@ text-decoration:none;
 
 <body>
 
+<header>
 <h1>GameBox Topup</h1>
 <p>Fast & Secure Free Fire Diamond Topup</p>
+</header>
 
-<div class="box">
+<div class="container">
 
 <input type="text" id="uid" placeholder="Enter Free Fire UID">
 
@@ -66,15 +163,31 @@ text-decoration:none;
 <option>310 Diamonds</option>
 <option>520 Diamonds</option>
 <option>1060 Diamonds</option>
+<option>Weekly Membership</option>
 </select>
+
+<div class="packages">
+
+<div class="card">100 💎</div>
+<div class="card">310 💎</div>
+<div class="card">520 💎</div>
+<div class="card">1060 💎</div>
+
+</div>
 
 <button onclick="submitOrder()">
 Order Now
 </button>
 
+<div class="payment">
+
+<h3>Payment QR</h3>
+
+<p>Upload your eSewa QR image here later</p>
+
 </div>
 
-<footer>
+<div class="socials">
 
 <a href="https://wa.me/">WhatsApp</a>
 
@@ -82,6 +195,12 @@ Order Now
 
 <a href="#">Facebook</a>
 
+</div>
+
+</div>
+
+<footer>
+© 2026 GameBox Topup
 </footer>
 
 <script>

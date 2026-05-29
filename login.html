@@ -1,9 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GameBox Login</title>
+<title>Login</title>
 
 <style>
 
@@ -26,67 +24,60 @@ width:350px;
 text-align:center;
 }
 
-h1{
-color:#ff9800;
-margin-bottom:20px;
-}
-
-input{
+input,button{
 width:100%;
 padding:14px;
 margin-top:15px;
 border:none;
 border-radius:10px;
+}
+
+input{
 background:#0f172a;
 color:white;
 }
 
 button{
-width:100%;
-padding:14px;
-margin-top:20px;
-border:none;
-border-radius:10px;
 background:#ff9800;
 color:white;
 font-weight:bold;
 cursor:pointer;
 }
 
-p{
-margin-top:15px;
-font-size:14px;
+.google{
+background:white;
+color:black;
 }
 
-span{
+a{
 color:#ff9800;
-cursor:pointer;
+text-decoration:none;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="box">
 
-<h1>GameBox Login</h1>
+<h1>Login</h1>
 
 <input type="email" id="email" placeholder="Enter Email">
 
 <input type="password" id="password" placeholder="Enter Password">
 
-<button onclick="signup()">
-Sign Up
-</button>
-
 <button onclick="login()">
 Login
 </button>
 
+<button class="google" onclick="googleLogin()">
+Continue With Google
+</button>
+
 <p>
-Don't have account? Create one above.
+No account?
+<a href="/signup.html">Create Account</a>
 </p>
 
 </div>
@@ -98,8 +89,9 @@ from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 
 import {
 getAuth,
-createUserWithEmailAndPassword,
-signInWithEmailAndPassword
+signInWithEmailAndPassword,
+GoogleAuthProvider,
+signInWithPopup
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
@@ -123,33 +115,6 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-window.signup = async function(){
-
-const email =
-document.getElementById("email").value;
-
-const password =
-document.getElementById("password").value;
-
-try{
-
-await createUserWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-alert("Account Created!");
-
-}
-catch(error){
-
-alert(error.message);
-
-}
-
-}
-
 window.login = async function(){
 
 const email =
@@ -165,6 +130,26 @@ auth,
 email,
 password
 );
+
+window.location.href = "/";
+
+}
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+window.googleLogin = async function(){
+
+const provider =
+new GoogleAuthProvider();
+
+try{
+
+await signInWithPopup(auth,provider);
 
 window.location.href = "/";
 

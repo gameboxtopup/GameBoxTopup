@@ -92,6 +92,11 @@ margin-top:10px;
 display:none;
 }
 
+a{
+color:#ff9800;
+text-decoration:none;
+}
+
 </style>
 
 </head>
@@ -116,7 +121,6 @@ placeholder="Enter Password">
 Wrong Email Or Password
 </p>
 
-
 <button
 class="email"
 onclick="emailLogin()">
@@ -125,19 +129,11 @@ Login With Email
 
 </button>
 
-
 <p style="margin-top:15px;">
 
 <a
 href="#"
-onclick="forgotPassword()"
-
-style="
-
-color:#ff9800;
-text-decoration:none;
-
-">
+onclick="forgotPassword()">
 
 Forgot Password?
 
@@ -145,48 +141,9 @@ Forgot Password?
 
 </p>
 
-
-<p style="margin-top:15px;font-size:14px;">
-
-Don't have account?
-
-<a href="/signup.html"
-
-style="
-
-color:#ff9800;
-text-decoration:none;
-font-weight:bold;
-
-">
-
-Create Account
-
-</a>
-
-</p>
-```html
-<p style="margin-top:15px;">
-
-<a
-href="#"
-onclick="forgotPassword()"
-
-style="
-
-color:#ff9800;
-text-decoration:none;
-
-">
-
-Forgot Password?
-
-</a>
-
-</p>
-
-
-<div id="resetBox" style="display:none;margin-top:20px;">
+<div
+id="resetBox"
+style="display:none;margin-top:20px;">
 
 <input
 type="email"
@@ -203,12 +160,22 @@ Send Reset Link
 
 <p
 id="resetMsg"
-style="margin-top:10px;color:#22c55e;font-size:14px;">
+style="margin-top:10px;font-size:14px;">
 </p>
 
 </div>
 
+<p style="margin-top:15px;font-size:14px;">
 
+Don't have account?
+
+<a href="/signup.html">
+
+Create Account
+
+</a>
+
+</p>
 
 <div class="or">
 
@@ -280,7 +247,6 @@ sendPasswordResetEmail
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
-
 const firebaseConfig = {
 
 apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
@@ -312,22 +278,16 @@ document.getElementById("password");
 const error =
 document.getElementById("error");
 
-email.style.border = "none";
-
-password.style.border = "none";
-
 error.style.display = "none";
+
+email.style.border = "none";
+password.style.border = "none";
 
 if(email.value.trim() === ""){
 
-error.innerHTML =
-"Enter Email";
-
-error.style.display =
-"block";
-
-email.style.border =
-"2px solid red";
+error.innerHTML = "Enter Email";
+error.style.display = "block";
+email.style.border = "2px solid red";
 
 return;
 
@@ -335,14 +295,9 @@ return;
 
 if(password.value.trim() === ""){
 
-error.innerHTML =
-"Enter Password";
-
-error.style.display =
-"block";
-
-password.style.border =
-"2px solid red";
+error.innerHTML = "Enter Password";
+error.style.display = "block";
+password.style.border = "2px solid red";
 
 return;
 
@@ -359,14 +314,12 @@ password.value
 window.location.href = "/";
 
 }
-
 catch(err){
 
 error.innerHTML =
 "Wrong Email Or Password";
 
-error.style.display =
-"block";
+error.style.display = "block";
 
 email.style.border =
 "2px solid red";
@@ -378,14 +331,32 @@ password.style.border =
 
 }
 
-window.forgotPassword = async function(){
+window.forgotPassword = function(){
+
+document.getElementById(
+"resetBox"
+).style.display = "block";
+
+}
+
+window.sendReset = async function(){
 
 const email =
-document.getElementById("email").value;
+document.getElementById(
+"resetEmail"
+).value;
+
+const msg =
+document.getElementById(
+"resetMsg"
+);
 
 if(email.trim() === ""){
 
-alert("Enter your email first");
+msg.style.color = "red";
+
+msg.innerHTML =
+"Enter Email";
 
 return;
 
@@ -398,59 +369,26 @@ auth,
 email
 );
 
-alert(
-"Password reset email sent!"
-);
+msg.style.color =
+"#22c55e";
+
+msg.innerHTML =
+"Password reset link sent to email";
 
 }
 catch(error){
 
-alert(
-"Failed to send reset email"
-);
+msg.style.color =
+"red";
+
+msg.innerHTML =
+"Email not found";
 
 }
 
 }
 
 window.googleLogin = async function(){
-
-
-
-window.forgotPassword = async function(){
-
-const email = prompt(
-"Enter your email address"
-);
-
-if(!email){
-
-return;
-
-}
-
-try{
-
-await sendPasswordResetEmail(
-auth,
-email
-);
-
-alert(
-"Password reset link sent to your email"
-);
-
-}
-catch(error){
-
-alert(
-"Invalid email or account not found"
-);
-
-}
-
-}
-
 
 const provider =
 new GoogleAuthProvider();

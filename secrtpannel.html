@@ -327,6 +327,11 @@ id: docSnap.id,
 
 });
 
+
+allOrders.sort((a,b)=>
+b.time?.seconds - a.time?.seconds
+);
+
 document.getElementById("totalOrders").innerHTML =
 snapshot.size;
 

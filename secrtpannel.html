@@ -95,31 +95,37 @@ text-align:center;
 
 <body>
 
-<script>
-
-const password = prompt("Enter Admin Password");
-
-if(password !== "Divya@6/7"){
-
-document.body.innerHTML = `
-<h1 style="margin-top:100px;">
-Access Denied
-</h1>
-`;
-
-throw new Error("Wrong Password");
-
-}
-
-</script>
-
 <h1>GameBox Orders</h1>
 
 <input
 type="text"
 id="search"
 placeholder="Search UID or Email">
+<div style="
+max-width:700px;
+margin:auto;
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:15px;
+margin-bottom:20px;
+">
 
+<div class="card">
+<h2 id="totalOrders">0</h2>
+<p>Total Orders</p>
+</div>
+
+<div class="card">
+<h2 id="completedOrders">0</h2>
+<p>Completed</p>
+</div>
+
+<div class="card">
+<h2 id="totalEarnings">Rs 0</h2>
+<p>Total Earnings</p>
+</div>
+
+</div>
 <div class="orders" id="orders"></div>
 
 <audio id="notifSound">
@@ -140,6 +146,11 @@ updateDoc,
 deleteDoc
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 const firebaseConfig = {
 
@@ -159,6 +170,39 @@ appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+const admins = [
+"nirmal@gmail.com",
+"admin@gmail.com"
+];
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href = "login.html";
+return;
+
+}
+
+if(!admins.includes(user.email)){
+
+document.body.innerHTML = `
+<h1 style="
+text-align:center;
+margin-top:100px;
+color:white;
+">
+Access Denied
+</h1>
+`;
+
+return;
+
+}
+
+});
 
 const ordersDiv = document.getElementById("orders");
 const searchInput = document.getElementById("search");
@@ -253,16 +297,41 @@ sound.play();
 window.lastOrderCount = snapshot.size;
 
 allOrders = [];
+let completed = 0;
+let earnings = 0;
 
 snapshot.forEach((docSnap)=>{
+const data = docSnap.data();
+
+if(data.status === "Completed"){
+
+completed++;
+
+const pack = data.package || "";
+
+if(pack.includes("130")) earnings += 130;
+if(pack.includes("400")) earnings += 400;
+if(pack.includes("650")) earnings += 650;
+if(pack.includes("1250")) earnings += 1250;
+if(pack.includes("200")) earnings += 200;
+
+}
 
 allOrders.push({
 id: docSnap.id,
-...docSnap.data()
+...data
 });
 
 });
 
+document.getElementById("totalOrders").innerHTML =
+snapshot.size;
+
+document.getElementById("completedOrders").innerHTML =
+completed;
+
+document.getElementById("totalEarnings").innerHTML =
+"Rs " + earnings;
 renderOrders();
 
 });

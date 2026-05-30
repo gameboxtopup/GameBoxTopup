@@ -68,10 +68,35 @@ throw new Error("Wrong Password");
 
 
 <h1>GameBox Orders</h1>
+<input
+type="text"
+id="search"
+placeholder="Search UID or Email"
 
+style="
+
+width:100%;
+max-width:700px;
+display:block;
+margin:auto;
+margin-bottom:20px;
+padding:15px;
+border:none;
+border-radius:10px;
+background:#1e293b;
+color:white;
+
+">
 <div class="orders" id="orders">
 
 </div>
+<audio id="notifSound">
+
+<source
+src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+type="audio/ogg">
+
+</audio>
 <script type="module">
 
 import { initializeApp }
@@ -80,9 +105,9 @@ from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
 import {
 getFirestore,
 collection,
-query,
-where,
-onSnapshot
+onSnapshot,
+deleteDoc,
+doc
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -111,30 +136,79 @@ document.getElementById("orders");
 
 onSnapshot(collection(db,"orders"),(snapshot)=>{
 
+const sound =
+document.getElementById("notifSound");
+
+if(window.lastOrderCount != undefined){
+
+if(snapshot.size > window.lastOrderCount){
+
+sound.play();
+
+}
+
+}
+
+window.lastOrderCount = snapshot.size;
+
 ordersDiv.innerHTML = "";
+
+const search =
+document.getElementById("search")
+.value
+.toLowerCase();
 
 snapshot.forEach((orderDoc)=>{
 
 const data = orderDoc.data();
 
+if(
+!data.uid.toLowerCase().includes(search)
+&&
+!data.email.toLowerCase().includes(search)
+){
+return;
+}
+
 ordersDiv.innerHTML += `
 
 <div class="card">
-
-<p><b>Email:</b> ${data.email}</p>
 
 <p><b>UID:</b> ${data.uid}</p>
 
 <p><b>Package:</b> ${data.package}</p>
 
-<p>
-<b>Status:</b>
+`;
 
-<span style="color:orange;">
-${data.status || "Processing"}
-</span>
+});
 
-</p>
+});
+
+
+ordersDiv.innerHTML = "";
+const search =
+document.getElementById("search")
+.value
+.toLowerCase();
+snapshot.forEach((orderDoc)=>{
+
+const data = orderDoc.data();
+
+if(
+!data.uid.toLowerCase().includes(search)
+&&
+!data.email.toLowerCase().includes(search)
+){
+return;
+}
+
+ordersDiv.innerHTML += `
+
+<div class="card">
+
+<p><b>UID:</b> ${data.uid}</p>
+
+<p><b>Package:</b> ${data.package}</p>
 
 <a href="${data.screenshot}" target="_blank"
 
@@ -154,26 +228,7 @@ Open Screenshot
 
 </a>
 
-<button onclick="completeOrder('${orderDoc.id}')"
-
-style="
-
-display:block;
-margin-top:10px;
-padding:10px 15px;
-background:green;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-
-">
-
-Completed
-
-</button>
-
-<button onclick="rejectOrder('${orderDoc.id}')"
+<button onclick="deleteOrder('${orderDoc.id}')"
 
 style="
 
@@ -188,45 +243,7 @@ cursor:pointer;
 
 ">
 
-Rejected
-
-</button>
-
-<button onclick="processingOrder('${orderDoc.id}')"
-
-style="
-
-display:block;
-margin-top:10px;
-padding:10px 15px;
-background:orange;
-color:black;
-border:none;
-border-radius:10px;
-cursor:pointer;
-
-">
-
-Processing
-
-</button>
-
-<button onclick="deleteOrder('${orderDoc.id}')"
-
-style="
-
-display:block;
-margin-top:10px;
-padding:10px 15px;
-background:#444;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-
-">
-
-Delete Permanently
+Completed / Delete
 
 </button>
 
@@ -236,31 +253,6 @@ Delete Permanently
 
 });
 
-});
-
-window.completeOrder = async function(id){
-
-await updateDoc(doc(db,"orders",id),{
-status:"Completed"
-});
-
-}
-
-window.rejectOrder = async function(id){
-
-await updateDoc(doc(db,"orders",id),{
-status:"Rejected"
-});
-
-}
-
-window.processingOrder = async function(id){
-
-await updateDoc(doc(db,"orders",id),{
-status:"Processing"
-});
-
-}
 
 window.deleteOrder = async function(id){
 
@@ -269,6 +261,7 @@ await deleteDoc(doc(db,"orders",id));
 }
 
 </script>
+
 
 </body>
 </html>

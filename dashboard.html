@@ -213,7 +213,10 @@ UID: ${data.uid}
 <p>
 Package: ${data.package}
 </p>
-
+<p>
+Date:
+${new Date(data.time.seconds * 1000).toLocaleString()}
+</p>
 <p>
 Status:
 <b style="color:${color};">

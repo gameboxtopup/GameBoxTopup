@@ -117,6 +117,30 @@ const auth = getAuth(app);
 
 
 const db = getFirestore(app);
+window.previewImage = function(event){
+
+const file = event.target.files[0];
+
+if(!file){
+return;
+}
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+const preview =
+document.getElementById("preview");
+
+preview.src = e.target.result;
+
+preview.style.display = "block";
+
+};
+
+reader.readAsDataURL(file);
+
+}
 
 
 onAuthStateChanged(auth,(user)=>{
@@ -360,7 +384,21 @@ Logout
 
 </div>
 
-<input type="file" id="screenshot" required>
+<input
+type="file"
+id="screenshot"
+accept="image/*"
+onchange="previewImage(event)"
+required>
+
+<img
+id="preview"
+style="
+display:none;
+width:100%;
+margin-top:15px;
+border-radius:10px;
+">
 
 <p style="font-size:13px;color:#ff9800;margin-top:8px;">
 Enter Payment Screenshot^

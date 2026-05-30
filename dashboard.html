@@ -112,6 +112,16 @@ onAuthStateChanged
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
+import {
+getFirestore,
+collection,
+query,
+where,
+getDocs,
+orderBy
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
 const firebaseConfig = {
 
 apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
@@ -132,22 +142,87 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-onAuthStateChanged(auth,(user)=>{
+const db = getFirestore(app);
 
-if(user){
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+window.location.href = "/login.html";
+
+return;
+
+}
 
 document.getElementById("userEmail").innerHTML =
 "Email: " + user.email;
 
-}else{
+const q = query(
+collection(db,"orders"),
+where("email","==",user.email),
+orderBy("time","desc")
+);
 
-window.location.href = "/login.html";
+const querySnapshot = await getDocs(q);
+
+const ordersContainer =
+document.getElementById("ordersContainer");
+
+if(querySnapshot.empty){
+
+ordersContainer.innerHTML = `
+
+<div class="empty">
+No Orders Found
+</div>
+
+`;
+
+return;
 
 }
+
+ordersContainer.innerHTML = "";
+
+let count = 1;
+
+querySnapshot.forEach((doc)=>{
+
+const data = doc.data();
+
+ordersContainer.innerHTML += `
+
+<div class="card">
+
+<h3>
+Order #${count}
+</h3>
+
+<p>
+UID: ${data.uid}
+</p>
+
+<p>
+Package: ${data.package}
+</p>
+
+<p>
+Status:
+<b style="color:orange;">
+${data.status}
+</b>
+</p>
+
+</div>
+
+`;
+
+count++;
+
+});
 
 });
 
 </script>
-
 </body>
 </html>

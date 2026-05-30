@@ -3,19 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Dashboard</title>
+<title>GameBox Dashboard</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
 body{
 background:#0f172a;
+font-family:Arial;
 color:white;
 padding:20px;
 }
@@ -33,52 +27,38 @@ font-size:28px;
 font-weight:bold;
 }
 
-.profile{
-background:#1e293b;
-padding:12px 15px;
-border-radius:10px;
-}
-
 .card{
 background:#1e293b;
 padding:20px;
 border-radius:15px;
-margin-bottom:20px;
-}
-
-.card h2{
-color:#ff9800;
-margin-bottom:10px;
-}
-
-#ordersContainer{
-display:flex;
-flex-direction:column;
-gap:15px;
-}
-
-.empty{
-text-align:center;
-padding:40px;
-background:#1e293b;
-border-radius:15px;
+margin-top:20px;
 }
 
 button{
-width:100%;
-padding:14px;
+padding:12px 18px;
 border:none;
 border-radius:10px;
 background:#ff9800;
 color:white;
-font-size:16px;
-font-weight:bold;
 cursor:pointer;
+font-weight:bold;
+}
+
+#ordersContainer{
 margin-top:20px;
+}
+
+.empty{
+background:#0f172a;
+padding:20px;
+border-radius:10px;
+text-align:center;
+margin-top:10px;
 }
 
 </style>
 </head>
+
 <body>
 
 <div class="header">
@@ -87,9 +67,9 @@ margin-top:20px;
 GameBox
 </div>
 
-<div class="profile">
-My Account
-</div>
+<button onclick="window.location.href='index.html'">
+New Topup
+</button>
 
 </div>
 
@@ -97,9 +77,13 @@ My Account
 
 <h2>User Profile</h2>
 
-<p id="userEmail">Loading...</p>
+<p id="userEmail">
+Loading...
+</p>
 
-<p>Account Status: Active</p>
+<p>
+Account Status: Active
+</p>
 
 </div>
 
@@ -110,17 +94,12 @@ My Account
 <div id="ordersContainer">
 
 <div class="empty">
-No Orders Yet
+No Orders Found
 </div>
 
 </div>
 
 </div>
-
-<button onclick="window.location.href='index.html'">
-New Topup
-</button>
-
 
 <script type="module">
 
@@ -134,12 +113,19 @@ onAuthStateChanged
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
 const firebaseConfig = {
-apiKey: "YOUR_API_KEY",
+
+apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
+
 authDomain: "gamebox-58ca6.firebaseapp.com",
+
 projectId: "gamebox-58ca6",
+
 storageBucket: "gamebox-58ca6.firebasestorage.app",
+
 messagingSenderId: "562074668636",
+
 appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
+
 };
 
 const app = initializeApp(firebaseConfig);
@@ -150,17 +136,18 @@ onAuthStateChanged(auth,(user)=>{
 
 if(user){
 
-document.getElementById("userEmail").innerText =
-user.email;
+document.getElementById("userEmail").innerHTML =
+"Email: " + user.email;
 
 }else{
 
-window.location.href="login.html";
+window.location.href = "/login.html";
 
 }
 
 });
 
 </script>
+
 </body>
 </html>

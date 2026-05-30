@@ -129,14 +129,22 @@ window.location.href = "/login.html";
 
 });
 
-window.logout = function(){
+window.logout = async function(){
 
-signOut(auth);
+await signOut(auth);
+
+window.location.href = "/login.html";
 
 }
 
 window.submitOrder = async function(){
+const submitBtn =
+document.getElementById("submitBtn");
 
+if(submitBtn.disabled) return;
+
+submitBtn.disabled = true;
+submitBtn.innerText = "Submitting...";
 const uid =
 document.getElementById("uid").value;
 
@@ -279,6 +287,9 @@ Back To Home
 }
 catch(error){
 
+submitBtn.disabled = false;
+submitBtn.innerText = "Submit Order";
+
 alert(error.message);
 
 }
@@ -355,7 +366,9 @@ Logout
 Enter Payment Screenshot^
 </p>
 <p style="font-size:13px;color:#ff4d4d;margin-top:15px;line-height:20px;"> NOTE: If you upload wrong screenshot of payment or entered wrong UID, contact on WhatsApp otherwise there will be no topup on your ID. </p>
-<button type="button" onclick="submitOrder()"> Submit Order </button>
+<button id="submitBtn" type="button" onclick="submitOrder()">
+Submit Order
+</button>
 <a href="GameBoxTopup.apk" download> <button> Download Android App </button> </a>
 
 <div class="socials">

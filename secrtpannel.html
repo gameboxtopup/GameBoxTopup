@@ -51,9 +51,10 @@ margin:8px 0;
 }
 
 .btn{
+width:100%;
 display:block;
 margin-top:10px;
-padding:10px 15px;
+padding:12px;
 border:none;
 border-radius:10px;
 cursor:pointer;
@@ -72,6 +73,21 @@ background:red;
 .processing{
 background:orange;
 color:black;
+}
+
+.delete{
+background:#444;
+}
+
+.view{
+display:block;
+margin-top:10px;
+padding:12px;
+background:#ff9800;
+color:white;
+text-decoration:none;
+border-radius:10px;
+text-align:center;
 }
 
 </style>
@@ -120,7 +136,8 @@ getFirestore,
 collection,
 onSnapshot,
 doc,
-updateDoc
+updateDoc,
+deleteDoc
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -175,19 +192,12 @@ ordersDiv.innerHTML += `
 
 <p><b>Package:</b> ${order.package}</p>
 
-<p><b>Status:</b> ${order.status}</p>
+<p><b>Status:</b> ${order.status || "Processing"}</p>
 
-<a href="${order.screenshot}"
-target="_blank"
-style="
-display:inline-block;
-margin-top:10px;
-padding:10px 15px;
-background:#ff9800;
-color:white;
-text-decoration:none;
-border-radius:10px;
-">
+<a
+class="view"
+href="${order.screenshot}"
+target="_blank">
 Open Screenshot
 </a>
 
@@ -207,6 +217,12 @@ Rejected
 class="btn processing"
 onclick="setStatus('${order.id}','Processing')">
 Processing
+</button>
+
+<button
+class="btn delete"
+onclick="deleteOrder('${order.id}')">
+Delete Permanently
 </button>
 
 </div>
@@ -253,9 +269,26 @@ renderOrders();
 
 window.setStatus = async function(id,status){
 
-await updateDoc(doc(db,"orders",id),{
+await updateDoc(
+doc(db,"orders",id),
+{
 status: status
-});
+}
+);
+
+}
+
+window.deleteOrder = async function(id){
+
+if(!confirm(
+"Delete this order permanently?"
+)){
+return;
+}
+
+await deleteDoc(
+doc(db,"orders",id)
+);
 
 }
 

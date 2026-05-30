@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameBox Dashboard</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#0f172a;
+color:white;
+padding:20px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.header h1{
+color:#ff9800;
+}
+
+.balance{
+background:#1e293b;
+padding:10px 15px;
+border-radius:10px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+.status{
+padding:6px 12px;
+border-radius:8px;
+font-weight:bold;
+display:inline-block;
+margin-top:10px;
+}
+
+.processing{
+background:orange;
+color:black;
+}
+
+.completed{
+background:limegreen;
+color:white;
+}
+
+.rejected{
+background:red;
+color:white;
+}
+
+.topbox{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:20px;
+}
+
+.smallcard{
+background:#1e293b;
+padding:20px;
+border-radius:15px;
+text-align:center;
+}
+
+.smallcard h2{
+color:#ff9800;
+margin-bottom:10px;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:20px;
+border:none;
+border-radius:10px;
+background:#ff9800;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>My Dashboard</h1>
+
+<div class="balance">
+UID: 123456789
+</div>
+
+</div>
+
+<div class="topbox">
+
+<div class="smallcard">
+<h2>5</h2>
+<p>Total Orders</p>
+</div>
+
+<div class="smallcard">
+<h2>3</h2>
+<p>Completed</p>
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>520 Diamonds</h2>
+
+<p>Date: 30 May 2026</p>
+
+<p>Price: Rs 650</p>
+
+<div class="status processing">
+Processing
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>1060 Diamonds</h2>
+
+<p>Date: 29 May 2026</p>
+
+<p>Price: Rs 1250</p>
+
+<div class="status completed">
+Completed
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Weekly Membership</h2>
+
+<p>Date: 28 May 2026</p>
+
+<p>Price: Rs 200</p>
+
+<div class="status rejected">
+Rejected
+</div>
+
+</div>
+
+<button onclick="window.location.href='index.html'">
+New Topup
+</button>
+
+</body>
+</html>

@@ -117,8 +117,7 @@ getFirestore,
 collection,
 query,
 where,
-getDocs,
-orderBy
+getDocs
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -159,8 +158,7 @@ document.getElementById("userEmail").innerHTML =
 
 const q = query(
 collection(db,"orders"),
-where("email","==",user.email),
-orderBy("time","desc")
+where("email","==",user.email)
 );
 
 const querySnapshot = await getDocs(q);

@@ -17,7 +17,20 @@ padding:20px;
 h1{
 text-align:center;
 color:#ff9800;
-margin-bottom:30px;
+margin-bottom:20px;
+}
+
+#search{
+width:100%;
+max-width:700px;
+display:block;
+margin:auto;
+margin-bottom:20px;
+padding:15px;
+border:none;
+border-radius:10px;
+background:#1e293b;
+color:white;
 }
 
 .orders{
@@ -37,25 +50,44 @@ border-radius:15px;
 margin:8px 0;
 }
 
-</style>
+.btn{
+display:block;
+margin-top:10px;
+padding:10px 15px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+color:white;
+}
 
+.complete{
+background:green;
+}
+
+.reject{
+background:red;
+}
+
+.processing{
+background:orange;
+color:black;
+}
+
+</style>
 </head>
 
 <body>
 
 <script>
 
-const password =
-prompt("Enter Admin Password");
+const password = prompt("Enter Admin Password");
 
 if(password !== "Divya@6/7"){
 
 document.body.innerHTML = `
-<h1 style="color:white;text-align:center;
-margin-top:100px;font-family:Arial;">
-
+<h1 style="margin-top:100px;">
 Access Denied
-
 </h1>
 `;
 
@@ -65,38 +97,19 @@ throw new Error("Wrong Password");
 
 </script>
 
-
-
 <h1>GameBox Orders</h1>
+
 <input
 type="text"
 id="search"
-placeholder="Search UID or Email"
+placeholder="Search UID or Email">
 
-style="
+<div class="orders" id="orders"></div>
 
-width:100%;
-max-width:700px;
-display:block;
-margin:auto;
-margin-bottom:20px;
-padding:15px;
-border:none;
-border-radius:10px;
-background:#1e293b;
-color:white;
-
-">
-<div class="orders" id="orders">
-
-</div>
 <audio id="notifSound">
-
-<source
-src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
-type="audio/ogg">
-
+<source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">
 </audio>
+
 <script type="module">
 
 import { initializeApp }
@@ -106,8 +119,8 @@ import {
 getFirestore,
 collection,
 onSnapshot,
-deleteDoc,
-doc
+doc,
+updateDoc
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -128,18 +141,90 @@ appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
 };
 
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
 
-const ordersDiv =
-document.getElementById("orders");
+const ordersDiv = document.getElementById("orders");
+const searchInput = document.getElementById("search");
+
+let allOrders = [];
+
+function renderOrders(){
+
+const search =
+searchInput.value.toLowerCase();
+
+ordersDiv.innerHTML = "";
+
+allOrders.forEach(order=>{
+
+if(
+!String(order.uid).toLowerCase().includes(search)
+&&
+!String(order.email).toLowerCase().includes(search)
+){
+return;
+}
+
+ordersDiv.innerHTML += `
+
+<div class="card">
+
+<p><b>Email:</b> ${order.email}</p>
+
+<p><b>UID:</b> ${order.uid}</p>
+
+<p><b>Package:</b> ${order.package}</p>
+
+<p><b>Status:</b> ${order.status}</p>
+
+<a href="${order.screenshot}"
+target="_blank"
+style="
+display:inline-block;
+margin-top:10px;
+padding:10px 15px;
+background:#ff9800;
+color:white;
+text-decoration:none;
+border-radius:10px;
+">
+Open Screenshot
+</a>
+
+<button
+class="btn complete"
+onclick="setStatus('${order.id}','Completed')">
+Completed
+</button>
+
+<button
+class="btn reject"
+onclick="setStatus('${order.id}','Rejected')">
+Rejected
+</button>
+
+<button
+class="btn processing"
+onclick="setStatus('${order.id}','Processing')">
+Processing
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+searchInput.addEventListener("input",renderOrders);
 
 onSnapshot(collection(db,"orders"),(snapshot)=>{
 
 const sound =
 document.getElementById("notifSound");
 
-if(window.lastOrderCount != undefined){
+if(window.lastOrderCount !== undefined){
 
 if(snapshot.size > window.lastOrderCount){
 
@@ -151,118 +236,30 @@ sound.play();
 
 window.lastOrderCount = snapshot.size;
 
-ordersDiv.innerHTML = "";
+allOrders = [];
 
-const search =
-document.getElementById("search")
-.value
-.toLowerCase();
+snapshot.forEach((docSnap)=>{
 
-snapshot.forEach((orderDoc)=>{
-
-const data = orderDoc.data();
-
-if(
-!data.uid.toLowerCase().includes(search)
-&&
-!data.email.toLowerCase().includes(search)
-){
-return;
-}
-
-ordersDiv.innerHTML += `
-
-<div class="card">
-
-<p><b>UID:</b> ${data.uid}</p>
-
-<p><b>Package:</b> ${data.package}</p>
-
-`;
-
+allOrders.push({
+id: docSnap.id,
+...docSnap.data()
 });
 
 });
 
-
-ordersDiv.innerHTML = "";
-const search =
-document.getElementById("search")
-.value
-.toLowerCase();
-snapshot.forEach((orderDoc)=>{
-
-const data = orderDoc.data();
-
-if(
-!data.uid.toLowerCase().includes(search)
-&&
-!data.email.toLowerCase().includes(search)
-){
-return;
-}
-
-ordersDiv.innerHTML += `
-
-<div class="card">
-
-<p><b>UID:</b> ${data.uid}</p>
-
-<p><b>Package:</b> ${data.package}</p>
-
-<a href="${data.screenshot}" target="_blank"
-
-style="
-
-display:inline-block;
-margin-top:10px;
-padding:10px 15px;
-background:#ff9800;
-color:white;
-text-decoration:none;
-border-radius:10px;
-
-">
-
-Open Screenshot
-
-</a>
-
-<button onclick="deleteOrder('${orderDoc.id}')"
-
-style="
-
-display:block;
-margin-top:10px;
-padding:10px 15px;
-background:red;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-
-">
-
-Completed / Delete
-
-</button>
-
-</div>
-
-`;
+renderOrders();
 
 });
 
+window.setStatus = async function(id,status){
 
-window.deleteOrder = async function(id){
-
-await deleteDoc(doc(db,"orders",id));
+await updateDoc(doc(db,"orders",id),{
+status: status
+});
 
 }
 
 </script>
 
-
 </body>
 </html>
-

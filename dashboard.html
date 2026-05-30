@@ -94,7 +94,7 @@ Account Status: Active
 <div id="ordersContainer">
 
 <div class="empty">
-No Orders Found
+Loading Orders...
 </div>
 
 </div>
@@ -117,7 +117,7 @@ getFirestore,
 collection,
 query,
 where,
-getDocs
+onSnapshot
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -143,7 +143,7 @@ const auth = getAuth(app);
 
 const db = getFirestore(app);
 
-onAuthStateChanged(auth, async(user)=>{
+onAuthStateChanged(auth,(user)=>{
 
 if(!user){
 
@@ -161,12 +161,12 @@ collection(db,"orders"),
 where("email","==",user.email)
 );
 
-const querySnapshot = await getDocs(q);
+onSnapshot(q,(snapshot)=>{
 
 const ordersContainer =
 document.getElementById("ordersContainer");
 
-if(querySnapshot.empty){
+if(snapshot.empty){
 
 ordersContainer.innerHTML = `
 
@@ -184,9 +184,19 @@ ordersContainer.innerHTML = "";
 
 let count = 1;
 
-querySnapshot.forEach((doc)=>{
+snapshot.forEach((doc)=>{
 
 const data = doc.data();
+
+let color = "orange";
+
+if(data.status=="Completed"){
+color = "lime";
+}
+
+if(data.status=="Rejected"){
+color = "red";
+}
 
 ordersContainer.innerHTML += `
 
@@ -206,7 +216,7 @@ Package: ${data.package}
 
 <p>
 Status:
-<b style="color:orange;">
+<b style="color:${color};">
 ${data.status}
 </b>
 </p>
@@ -221,6 +231,9 @@ count++;
 
 });
 
+});
+
 </script>
+
 </body>
 </html>

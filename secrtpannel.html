@@ -72,7 +72,6 @@ throw new Error("Wrong Password");
 <div class="orders" id="orders">
 
 </div>
-
 <script type="module">
 
 import { initializeApp }
@@ -82,8 +81,9 @@ import {
 getFirestore,
 collection,
 onSnapshot,
-deleteDoc,
-doc
+doc,
+updateDoc,
+deleteDoc
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -122,9 +122,20 @@ ordersDiv.innerHTML += `
 
 <div class="card">
 
+<p><b>Email:</b> ${data.email}</p>
+
 <p><b>UID:</b> ${data.uid}</p>
 
 <p><b>Package:</b> ${data.package}</p>
+
+<p>
+<b>Status:</b>
+
+<span style="color:orange;">
+${data.status || "Processing"}
+</span>
+
+</p>
 
 <a href="${data.screenshot}" target="_blank"
 
@@ -144,7 +155,26 @@ Open Screenshot
 
 </a>
 
-<button onclick="deleteOrder('${orderDoc.id}')"
+<button onclick="completeOrder('${orderDoc.id}')"
+
+style="
+
+display:block;
+margin-top:10px;
+padding:10px 15px;
+background:green;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+
+">
+
+Completed
+
+</button>
+
+<button onclick="rejectOrder('${orderDoc.id}')"
 
 style="
 
@@ -159,7 +189,45 @@ cursor:pointer;
 
 ">
 
-Completed / Delete
+Rejected
+
+</button>
+
+<button onclick="processingOrder('${orderDoc.id}')"
+
+style="
+
+display:block;
+margin-top:10px;
+padding:10px 15px;
+background:orange;
+color:black;
+border:none;
+border-radius:10px;
+cursor:pointer;
+
+">
+
+Processing
+
+</button>
+
+<button onclick="deleteOrder('${orderDoc.id}')"
+
+style="
+
+display:block;
+margin-top:10px;
+padding:10px 15px;
+background:#444;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+
+">
+
+Delete Permanently
 
 </button>
 
@@ -171,6 +239,30 @@ Completed / Delete
 
 });
 
+window.completeOrder = async function(id){
+
+await updateDoc(doc(db,"orders",id),{
+status:"Completed"
+});
+
+}
+
+window.rejectOrder = async function(id){
+
+await updateDoc(doc(db,"orders",id),{
+status:"Rejected"
+});
+
+}
+
+window.processingOrder = async function(id){
+
+await updateDoc(doc(db,"orders",id),{
+status:"Processing"
+});
+
+}
+
 window.deleteOrder = async function(id){
 
 await deleteDoc(doc(db,"orders",id));
@@ -178,7 +270,6 @@ await deleteDoc(doc(db,"orders",id));
 }
 
 </script>
-
 
 </body>
 </html>

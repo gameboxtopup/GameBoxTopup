@@ -121,5 +121,46 @@ No Orders Yet
 New Topup
 </button>
 
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "YOUR_API_KEY",
+authDomain: "gamebox-58ca6.firebaseapp.com",
+projectId: "gamebox-58ca6",
+storageBucket: "gamebox-58ca6.firebasestorage.app",
+messagingSenderId: "562074668636",
+appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+document.getElementById("userEmail").innerText =
+user.email;
+
+}else{
+
+window.location.href="login.html";
+
+}
+
+});
+
+</script>
 </body>
 </html>

@@ -77,16 +77,16 @@ border-radius:10px;
 <body>
 <div class="social-float">
 
-<a href="https://wa.me/97798XXXXXXXX" target="_blank" class="whatsapp">
-💬
+<a href="https://wa.me/+9779708567948" target="_blank" class="whatsapp">
+WhatsApp
 </a>
 
-<a href="https://facebook.com/YOURPAGE" target="_blank" class="facebook">
-📘
-</a>
+<!-- <a href="https://www.facebook.com/NirmalChettri9814" target="_blank" class="facebook">
+Facebook
+</a> -->
 
-<a href="https://instagram.com/YOURINSTAGRAM" target="_blank" class="instagram">
-📷
+<a href="https://discordapp.com/users/1510309159122501862" target="_blank" class="Discord">
+Discord
 </a>
 
 </div>
@@ -98,35 +98,30 @@ right:20px;
 bottom:20px;
 display:flex;
 flex-direction:column;
-gap:12px;
+gap:10px;
 z-index:9999;
 }
 
 .social-float a{
-width:55px;
-height:55px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:50%;
-font-size:28px;
+padding:12px 18px;
+border-radius:30px;
+color:white;
 text-decoration:none;
+font-weight:bold;
+text-align:center;
 box-shadow:0 4px 10px rgba(0,0,0,.3);
 }
 
 .whatsapp{
 background:#25D366;
-color:white;
+}
+
+.Discord{
+background:#1877F2;
 }
 
 .facebook{
-background:#1877F2;
-color:white;
-}
-
-.instagram{
 background:#E4405F;
-color:white;
 }
 </style>
 <script type="module">
@@ -231,6 +226,16 @@ document.getElementById("package").value;
 
 const screenshot =
 document.getElementById("screenshot").files[0];
+if(screenshot && screenshot.size > 10 * 1024 * 1024){
+
+alert("Screenshot must be less than 5MB");
+
+submitBtn.disabled = false;
+submitBtn.innerText = "Submit Order";
+
+return;
+
+}
 
 if(uid.trim()==""){
 alert("Enter UID");
@@ -393,8 +398,6 @@ alert(error.message);
 
 </script>
 
-
-
 <div class="container">
 <div style="text-align:right;">
 
@@ -467,7 +470,7 @@ Fast • Secure • Instant Free Fire Topup
 <input
 type="file"
 id="screenshot"
-accept="image/*"
+accept=".jpg,.jpeg,.png,.webp"
 onchange="previewImage(event)"
 required>
 

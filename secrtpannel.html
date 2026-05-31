@@ -345,8 +345,6 @@ renderOrders();
 
 window.setStatus = async function(id,status){
 
-try{
-
 await updateDoc(
 doc(db,"orders",id),
 {
@@ -356,7 +354,9 @@ status: status
 
 if(status === "Completed"){
 
-const webhook = "https://discord.com/api/webhooks/1510500668388020374/eUNYSpnB-a9OASxCsp_sp8-Uo0AXIenp72LZcVLgXS4E62EQNd0rPFIDduuXchoqEzFa";
+alert("Completed button detected");
+
+const webhook = "YOUR_CURRENT_WEBHOOK_URL";
 
 await fetch(webhook,{
 method:"POST",
@@ -364,20 +364,9 @@ headers:{
 "Content-Type":"application/json"
 },
 body: JSON.stringify({
-content: `✅ Order Completed
-
-Order ID: ${id}
-
-Status: Completed`
+content:"✅ COMPLETED TEST MESSAGE"
 })
 });
-
-}
-
-}
-catch(error){
-
-console.error(error);
 
 }
 

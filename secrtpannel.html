@@ -346,6 +346,8 @@ renderOrders();
 
 window.setStatus = async function(id,status){
 
+try{
+
 await updateDoc(
 doc(db,"orders",id),
 {
@@ -357,7 +359,7 @@ if(status === "Completed"){
 
 const webhook = "https://discord.com/api/webhooks/1510486025796059296/c1VoFveIsVLQRhjD6wqtgPOtBxvizZulBNiL0OZqdcDb114eElUDB4RhodsQ4SezrRLh";
 
-await fetch(webhook,{
+const response = await fetch(webhook,{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
@@ -371,9 +373,20 @@ Status: ${status}`
 })
 });
 
+console.log("Discord Response:", response.status);
+
 }
 
 }
+catch(error){
+
+console.error(error);
+alert(error.message);
+
+}
+
+}
+
 window.deleteOrder = async function(id){
 
 if(!confirm("Delete this order permanently?")){
@@ -384,6 +397,5 @@ await deleteDoc(doc(db,"orders",id));
 
 }
 </script>
-
 </body>
 </html>

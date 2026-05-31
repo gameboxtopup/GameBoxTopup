@@ -353,22 +353,36 @@ status: status
 }
 );
 
+if(status === "Completed"){
+
+const webhook = "YOUR_ACTUAL_WEBHOOK_URL";
+
+await fetch(webhook,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+content: `🎉 Order Completed
+
+Order ID: ${id}
+
+Status: ${status}`
+})
+});
+
 }
 
+}
 window.deleteOrder = async function(id){
 
-if(!confirm(
-"Delete this order permanently?"
-)){
+if(!confirm("Delete this order permanently?")){
 return;
 }
 
-await deleteDoc(
-doc(db,"orders",id)
-);
+await deleteDoc(doc(db,"orders",id));
 
 }
-
 </script>
 
 </body>

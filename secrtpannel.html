@@ -356,7 +356,7 @@ status: status
 
 if(status === "Completed"){
 
-const webhook = "YOUR_NEW_WEBHOOK_URL";
+const webhook = "https://discord.com/api/webhooks/1510500668388020374/eUNYSpnB-a9OASxCsp_sp8-Uo0AXIenp72LZcVLgXS4E62EQNd0rPFIDduuXchoqEzFa";
 
 await fetch(webhook,{
 method:"POST",
@@ -364,11 +364,11 @@ headers:{
 "Content-Type":"application/json"
 },
 body: JSON.stringify({
-content:`🎉 Order Completed
+content: `✅ Order Completed
 
 Order ID: ${id}
 
-Status: ${status}`
+Status: Completed`
 })
 });
 

@@ -246,6 +246,13 @@ document.getElementById("uid").value;
 const pack =
 document.getElementById("package").value;
 
+if(pack === ""){
+alert("Select a package");
+submitBtn.disabled = false;
+submitBtn.innerText = "Submit Order";
+return;
+}
+
 const screenshot =
 document.getElementById("screenshot").files[0];
 if(screenshot && screenshot.size > 10 * 1024 * 1024){
@@ -474,6 +481,9 @@ Fast • Secure • Instant Free Fire Topup
 <input type="text" id="uid" placeholder="Enter Free Fire UID">
 
 <select id="package">
+
+<option value="">Select Diamond Package</option>
+
 <option value="Weekly Membership - Rs 210">Weekly Membership - Rs 210</option>
 <option value="Monthly Membership - Rs 1030">Monthly Membership - Rs 1030</option>
 <option value="25 Diamonds - Rs 30">25 Diamonds - Rs 30</option>

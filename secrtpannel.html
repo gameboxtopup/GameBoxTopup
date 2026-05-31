@@ -310,11 +310,11 @@ completed++;
 
 const pack = data.package || "";
 
-if(pack.includes("130")) earnings += 130;
-if(pack.includes("400")) earnings += 400;
-if(pack.includes("650")) earnings += 650;
-if(pack.includes("1250")) earnings += 1250;
-if(pack.includes("200")) earnings += 200;
+const match = pack.match(/Rs\s*(\d+)/i);
+
+if(match){
+    earnings += Number(match[1]);
+}
 
 }
 

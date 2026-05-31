@@ -187,7 +187,6 @@ return;
 }
 
 console.log("Logged in:", user.email);
-alert(user.email);
 
 if(!admins.includes(user.email)){
 
@@ -346,6 +345,8 @@ renderOrders();
 
 window.setStatus = async function(id,status){
 
+alert("Button clicked: " + status);
+
 try{
 
 await updateDoc(
@@ -357,7 +358,9 @@ status: status
 
 if(status === "Completed"){
 
-const webhook = "https://discord.com/api/webhooks/1510486025796059296/c1VoFveIsVLQRhjD6wqtgPOtBxvizZulBNiL0OZqdcDb114eElUDB4RhodsQ4SezrRLh";
+alert("Sending Discord message");
+
+const webhook = "PASTE_YOUR_NEW_DISCORD_WEBHOOK_HERE";
 
 const response = await fetch(webhook,{
 method:"POST",
@@ -365,15 +368,11 @@ headers:{
 "Content-Type":"application/json"
 },
 body: JSON.stringify({
-content: `🎉 Order Completed
-
-Order ID: ${id}
-
-Status: ${status}`
+content:"TEST COMPLETED MESSAGE"
 })
 });
 
-console.log("Discord Response:", response.status);
+alert("Discord Response: " + response.status);
 
 }
 
@@ -381,12 +380,11 @@ console.log("Discord Response:", response.status);
 catch(error){
 
 console.error(error);
-alert(error.message);
+alert("Error: " + error.message);
 
 }
 
 }
-
 window.deleteOrder = async function(id){
 
 if(!confirm("Delete this order permanently?")){

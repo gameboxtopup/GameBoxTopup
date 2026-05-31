@@ -345,6 +345,15 @@ renderOrders();
 
 window.setStatus = async function(id,status){
 
+const order = allOrders.find(o => o.id === id);
+body: JSON.stringify({
+content: `✅ Order Completed
+
+📧 Email: ${order.email}
+🆔 UID: ${order.uid}
+💎 Package: ${order.package}
+📊 Status: Completed`
+})
 await updateDoc(
 doc(db,"orders",id),
 {
@@ -364,7 +373,11 @@ headers:{
 "Content-Type":"application/json"
 },
 body: JSON.stringify({
-content:"✅ COMPLETED TEST MESSAGE"
+content: `✅ Order Completed
+
+🆔 Order ID: ${id}
+
+📊 Status: Completed`
 })
 });
 

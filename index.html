@@ -225,6 +225,23 @@ email: auth.currentUser.email,
 time: new Date()
 
 });
+const webhook = "https://discord.com/api/webhooks/1510486025796059296/c1VoFveIsVLQRhjD6wqtgPOtBxvizZulBNiL0OZqdcDb114eElUDB4RhodsQ4SezrRLh";
+
+await fetch(webhook,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+content:
+`🎮 New GameBox Order
+
+📧 Email: ${auth.currentUser.email}
+🆔 UID: ${uid}
+💎 Package: ${pack}
+📊 Status: Processing`
+})
+});
 
 document.body.innerHTML = `
 

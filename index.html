@@ -540,6 +540,12 @@ document.getElementById("selectedPackageText").innerText = card.dataset.value;
 
 document.getElementById("selectedPackageBox").style.display = "block";
 
+
+// auto scroll to payment
+document.querySelector(".qr").scrollIntoView({
+behavior:"smooth"
+});
+
 };
 });
 window.updateSummaryUID = function () {

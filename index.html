@@ -244,7 +244,7 @@ getFirestore,
 collection,
 addDoc,
 doc,
-getDoc
+getDocs,
 }
 from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
@@ -279,9 +279,11 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 async function checkStock(){
 
-const snap = await getDoc(doc(db,"settings","topup"));
+const stock = await getDoc(
+doc(db,"settings","topup")
+);
 
-if(snap.exists() && snap.data().available === false){
+if(stock.exists() && stock.data().available === false){
 
 document.body.innerHTML = `
 
@@ -294,7 +296,6 @@ background:#0f172a;
 color:white;
 font-family:Arial;
 text-align:center;
-padding:20px;
 ">
 
 <div>
@@ -304,7 +305,7 @@ padding:20px;
 </h1>
 
 <p>
-Sorry, topup stock is currently over.
+Sorry, topup stock is currently over.<br>
 Please try again later.
 </p>
 

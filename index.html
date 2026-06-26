@@ -540,11 +540,14 @@ document.getElementById("selectedPackageText").innerText = card.dataset.value;
 
 document.getElementById("selectedPackageBox").style.display = "block";
 
+setTimeout(()=>{
 
-// auto scroll to payment
-document.querySelector(".qr").scrollIntoView({
-behavior:"smooth"
+document.getElementById("selectedPackageBox").scrollIntoView({
+behavior:"smooth",
+block:"start"
 });
+
+},200);
 
 };
 });

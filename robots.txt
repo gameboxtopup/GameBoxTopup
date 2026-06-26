@@ -1,4 +1,5 @@
 User-agent: *
+
 Allow: /
 
-Sitemap: https://gameboxtopup.vercel.app/sitemap.xml
+Sitemap: https://firenextopup.vercel.app/sitemap.xml

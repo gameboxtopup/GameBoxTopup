@@ -275,23 +275,43 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-
 const db = getFirestore(app);
 async function checkStock(){
 
 const snap = await getDoc(doc(db,"settings","topup"));
 
-console.log(snap.data());
-
 if(snap.exists() && snap.data().available === false){
 
-alert("Topup temporarily unavailable. Please try later");
+document.body.innerHTML = `
+<div style="
+height:100vh;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+font-family:Arial;
+text-align:center;
+">
+
+<div>
+<h2>⚠️ Topup Temporarily Unavailable</h2>
+
+<p style="color:#aaa;font-size:16px;">
+Topup stock is not available right now.<br>
+Please try again later.
+</p>
+
+</div>
+
+</div>
+`;
 
 }
 
 }
-
 checkStock();
+
 window.previewImage = function(event){
 
 const file = event.target.files[0];
@@ -337,6 +357,7 @@ window.location.href = "/login.html";
 }
 
 window.submitOrder = async function(){
+await checkStock();
 const submitBtn =
 document.getElementById("submitBtn");
 

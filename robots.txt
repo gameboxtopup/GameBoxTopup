@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gameboxtopup.vercel.app/sitemap.xml

@@ -279,41 +279,13 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 async function checkStock(){
 
-const stock = await getDoc(
-doc(db,"settings","topup")
-);
+const snap = await getDoc(doc(db,"settings","topup"));
 
-if(stock.exists() && stock.data().available === false){
+console.log(snap.data());
 
-document.body.innerHTML = `
+if(snap.exists() && snap.data().available === false){
 
-<div style="
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-background:#0f172a;
-color:white;
-font-family:Arial;
-text-align:center;
-">
-
-<div>
-
-<h1 style="color:#ff9800;">
-⚠️ Topup Temporarily Unavailable
-</h1>
-
-<p>
-Sorry, topup stock is currently over.<br>
-Please try again later.
-</p>
-
-</div>
-
-</div>
-
-`;
+alert("Topup temporarily unavailable. Please try later");
 
 }
 

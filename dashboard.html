@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameBox Dashboard</title>
+<link rel="icon" type="png" href="icon.png">
+<style>
+
+body{
+background:#0f172a;
+font-family:Arial;
+color:white;
+padding:20px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.logo{
+color:#ff9800;
+font-size:28px;
+font-weight:bold;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:15px;
+margin-top:20px;
+}
+
+button{
+padding:12px 18px;
+border:none;
+border-radius:10px;
+background:#ff9800;
+color:white;
+cursor:pointer;
+font-weight:bold;
+}
+
+#ordersContainer{
+margin-top:20px;
+}
+
+.empty{
+background:#0f172a;
+padding:20px;
+border-radius:10px;
+text-align:center;
+margin-top:10px;
+}
+
+</style>
+</head>
+
+<body>
+<div style="
+margin-top:20px;
+text-align:center;
+">
+
+<a href="https://wa.me/9779708567948"
+style="
+display:inline-block;
+padding:12px 20px;
+background:#25D366;
+color:white;
+text-decoration:none;
+border-radius:10px;
+margin:5px;
+font-weight:bold;
+">
+WhatsApp Support
+</a>
+
+<a href="https://www.facebook.com/NirmalChettri9814"
+style="
+display:inline-block;
+padding:12px 20px;
+background:#1877F2;
+color:white;
+text-decoration:none;
+border-radius:10px;
+margin:5px;
+font-weight:bold;
+">
+Facebook Support
+</a>
+
+</div>
+
+<div class="header">
+
+<div class="logo">
+GameBox
+</div>
+
+<button onclick="window.location.href='index.html'">
+New Topup
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>User Profile</h2>
+
+<p id="userEmail">
+Loading...
+</p>
+
+<p>
+Account Status: Active
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>My Orders</h2>
+
+<div id="ordersContainer">
+
+<div class="empty">
+Loading Orders...
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+query,
+where,
+onSnapshot
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
+
+authDomain: "gamebox-58ca6.firebaseapp.com",
+
+projectId: "gamebox-58ca6",
+
+storageBucket: "gamebox-58ca6.firebasestorage.app",
+
+messagingSenderId: "562074668636",
+
+appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href = "/login.html";
+
+return;
+
+}
+
+document.getElementById("userEmail").innerHTML =
+"Email: " + user.email;
+
+const q = query(
+collection(db,"orders"),
+where("email","==",user.email)
+);
+
+onSnapshot(q,(snapshot)=>{
+
+const ordersContainer =
+document.getElementById("ordersContainer");
+
+if(snapshot.empty){
+
+ordersContainer.innerHTML = `
+
+<div class="empty">
+No Orders Found
+</div>
+
+`;
+
+return;
+
+}
+
+ordersContainer.innerHTML = "";
+
+let count = 1;
+
+snapshot.forEach((doc)=>{
+
+const data = doc.data();
+
+let color = "orange";
+
+if(data.status=="Completed"){
+color = "lime";
+}
+
+if(data.status=="Rejected"){
+color = "red";
+}
+
+ordersContainer.innerHTML += `
+
+<div class="card">
+
+<h3>
+Order #${count}
+</h3>
+
+<p>
+UID: ${data.uid}
+</p>
+
+<p>
+Package: ${data.package}
+</p>
+<p>
+Date:
+${new Date(data.time.seconds * 1000).toLocaleString()}
+</p>
+<p>
+Status:
+<b style="color:${color};">
+${data.status}
+</b>
+</p>
+
+</div>
+
+`;
+
+count++;
+
+});
+
+});
+
+});
+
+</script>
+
+</body>
+</html>

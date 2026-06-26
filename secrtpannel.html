@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameBox Admin</title>
+<link rel="icon" type="png" href="icon.png">
+<style>
+
+body{
+background:#0f172a;
+font-family:Arial;
+color:white;
+padding:20px;
+}
+
+h1{
+text-align:center;
+color:#ff9800;
+margin-bottom:20px;
+}
+
+#search{
+width:100%;
+max-width:700px;
+display:block;
+margin:auto;
+margin-bottom:20px;
+padding:15px;
+border:none;
+border-radius:10px;
+background:#1e293b;
+color:white;
+}
+
+.orders{
+display:grid;
+gap:15px;
+max-width:700px;
+margin:auto;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:15px;
+}
+
+.card p{
+margin:8px 0;
+}
+
+.btn{
+width:100%;
+display:block;
+margin-top:10px;
+padding:12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+color:white;
+}
+
+.complete{
+background:green;
+}
+
+.reject{
+background:red;
+}
+
+.processing{
+background:orange;
+color:black;
+}
+
+.delete{
+background:#444;
+}
+
+.view{
+display:block;
+margin-top:10px;
+padding:12px;
+background:#ff9800;
+color:white;
+text-decoration:none;
+border-radius:10px;
+text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>GameBox Orders</h1>
+<input
+type="text"
+id="search"
+placeholder="Search UID or Email">
+<div style="
+max-width:700px;
+margin:auto;
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:15px;
+margin-bottom:20px;
+">
+
+<div class="card">
+<h2 id="totalOrders">0</h2>
+<p>Total Orders</p>
+</div>
+
+<div class="card">
+<h2 id="completedOrders">0</h2>
+<p>Completed</p>
+</div>
+
+<div class="card">
+<h2 id="totalEarnings">Rs 0</h2>
+<p>Total Earnings</p>
+</div>
+
+</div>
+<div class="orders" id="orders"></div>
+
+<audio id="notifSound">
+<source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg">
+</audio>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+onSnapshot,
+doc,
+updateDoc,
+deleteDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
+
+authDomain: "gamebox-58ca6.firebaseapp.com",
+
+projectId: "gamebox-58ca6",
+
+storageBucket: "gamebox-58ca6.firebasestorage.app",
+
+messagingSenderId: "562074668636",
+
+appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
+
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+const admins = [
+"nirmalktht@gmail.com",
+"gameboxtopup@gmail.com"
+];
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href = "login.html";
+return;
+
+}
+
+console.log("Logged in:", user.email);
+
+if(!admins.includes(user.email)){
+
+document.body.innerHTML = `
+<h1 style="
+text-align:center;
+margin-top:100px;
+color:white;
+">
+Access Denied
+</h1>
+`;
+
+throw new Error("Not Admin");
+
+}
+
+});
+
+const ordersDiv = document.getElementById("orders");
+const searchInput = document.getElementById("search");
+
+let allOrders = [];
+
+function renderOrders(){
+
+const search =
+searchInput.value.toLowerCase();
+
+ordersDiv.innerHTML = "";
+
+allOrders.forEach(order=>{
+
+if(
+!String(order.uid).toLowerCase().includes(search)
+&&
+!String(order.email).toLowerCase().includes(search)
+){
+return;
+}
+
+ordersDiv.innerHTML += `
+
+<div class="card">
+
+<p><b>Email:</b> ${order.email}</p>
+
+<p><b>UID:</b> ${order.uid}</p>
+
+<p><b>Package:</b> ${order.package}</p>
+
+<p><b>Status:</b> ${order.status || "Processing"}</p>
+
+<a
+class="view"
+href="${order.screenshot}"
+target="_blank">
+Open Screenshot
+</a>
+
+<button
+class="btn complete"
+onclick="setStatus('${order.id}','Completed')">
+Completed
+</button>
+
+<button
+class="btn reject"
+onclick="setStatus('${order.id}','Rejected')">
+Rejected
+</button>
+
+<button
+class="btn processing"
+onclick="setStatus('${order.id}','Processing')">
+Processing
+</button>
+
+<button
+class="btn delete"
+onclick="deleteOrder('${order.id}')">
+Delete Permanently
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+searchInput.addEventListener("input",renderOrders);
+
+onSnapshot(collection(db,"orders"),(snapshot)=>{
+
+const sound =
+document.getElementById("notifSound");
+
+if(window.lastOrderCount !== undefined){
+
+if(snapshot.size > window.lastOrderCount){
+
+sound.play();
+
+}
+
+}
+
+window.lastOrderCount = snapshot.size;
+
+allOrders = [];
+let completed = 0;
+let earnings = 0;
+
+snapshot.forEach((docSnap)=>{
+const data = docSnap.data();
+
+if(data.status === "Completed"){
+
+completed++;
+
+const pack = data.package || "";
+
+const match = pack.match(/Rs\s*(\d+)/i);
+
+if(match){
+    earnings += Number(match[1]);
+}
+
+}
+
+allOrders.push({
+id: docSnap.id,
+...data
+});
+
+});
+
+
+allOrders.sort((a,b)=>
+b.time?.seconds - a.time?.seconds
+);
+
+document.getElementById("totalOrders").innerHTML =
+snapshot.size;
+
+document.getElementById("completedOrders").innerHTML =
+completed;
+
+document.getElementById("totalEarnings").innerHTML =
+"Rs " + earnings;
+renderOrders();
+
+});
+
+window.setStatus = async function(id,status){
+
+const order = allOrders.find(o => o.id === id);
+
+await updateDoc(
+doc(db,"orders",id),
+{
+status: status
+}
+);
+
+if(status === "Completed"){
+
+const webhook = "https://discord.com/api/webhooks/1510500668388020374/eUNYSpnB-a9OASxCsp_sp8-Uo0AXIenp72LZcVLgXS4E62EQNd0rPFIDduuXchoqEzFa";
+
+await fetch(webhook,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+content: `✅ Order Completed
+
+📧 Email: ${order.email}
+🆔 UID: ${order.uid}
+💎 Package: ${order.package}
+📊 Status: Completed`
+})
+});
+
+}
+
+}
+window.deleteOrder = async function(id){
+
+if(!confirm("Delete this order permanently?")){
+return;
+}
+
+await deleteDoc(doc(db,"orders",id));
+
+}
+</script>
+</body>
+</html>

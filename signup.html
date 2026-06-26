@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GameBox Signup</title>
+<link rel="icon" type="png" href="icon.png">
+<style>
+
+body{
+background:#0f172a;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+color:white;
+}
+
+.box{
+background:#1e293b;
+padding:30px;
+border-radius:20px;
+width:350px;
+text-align:center;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+h1{
+color:#ff9800;
+margin-bottom:25px;
+}
+
+input,button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+font-size:15px;
+box-sizing:border-box;
+}
+
+input{
+background:#0f172a;
+color:white;
+outline:none;
+}
+
+button{
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+.signup{
+background:#22c55e;
+color:white;
+}
+
+.google{
+background:white;
+color:black;
+}
+
+.phone{
+background:#2563eb;
+color:white;
+}
+
+.or{
+margin-top:20px;
+margin-bottom:10px;
+opacity:0.7;
+font-size:14px;
+}
+
+#error{
+color:#ff4d4d;
+font-size:14px;
+margin-top:10px;
+display:none;
+}
+
+a{
+color:#ff9800;
+text-decoration:none;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+<a href="GameBoxTopup.apk" class="app-float">
+📱GameBox App
+</a>
+
+<style>
+.app-float{
+position:fixed;
+left:20px;
+bottom:20px;
+background:#2563eb;
+color:white;
+padding:12px 16px;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold;
+box-shadow:0 4px 10px rgba(0,0,0,.3);
+z-index:9999;
+}
+</style>
+
+<div class="box">
+
+<h1>Create Account</h1>
+
+<input
+type="email"
+id="email"
+placeholder="Enter Email">
+
+<input
+type="password"
+id="password"
+placeholder="Enter Password">
+
+<p id="error"></p>
+
+<button
+class="signup"
+onclick="signup()">
+
+Create Account
+
+</button>
+
+<div class="or">
+
+OR
+
+</div>
+
+<button
+class="google"
+onclick="googleSignup()">
+
+Continue With Google
+
+</button>
+
+<button
+class="phone"
+onclick="openPhoneSignup()">
+
+Continue With Phone Number
+
+</button>
+
+<div
+id="phoneBox"
+style="display:none;">
+
+<input
+type="text"
+id="phone"
+placeholder="+97798XXXXXXXX">
+
+<div id="recaptcha-container"></div>
+
+<button onclick="sendOTP()">
+
+Send OTP
+
+</button>
+
+<input
+type="text"
+id="otp"
+placeholder="Enter OTP">
+
+<button onclick="verifyOTP()">
+
+Verify OTP
+
+</button>
+
+</div>
+
+<p style="margin-top:20px;">
+
+Already have account?
+
+<a href="/login.html">
+
+Login
+
+</a>
+
+</p>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getAuth,
+createUserWithEmailAndPassword,
+GoogleAuthProvider,
+signInWithPopup,
+RecaptchaVerifier,
+signInWithPhoneNumber
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
+
+authDomain: "gamebox-58ca6.firebaseapp.com",
+
+projectId: "gamebox-58ca6",
+
+storageBucket: "gamebox-58ca6.firebasestorage.app",
+
+messagingSenderId: "562074668636",
+
+appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+window.signup = async function(){
+
+const email =
+document.getElementById("email");
+
+const password =
+document.getElementById("password");
+
+const error =
+document.getElementById("error");
+
+error.style.display = "none";
+
+email.style.border = "none";
+
+password.style.border = "none";
+
+if(email.value.trim() === ""){
+
+error.style.display = "block";
+
+error.innerHTML =
+"Enter Email";
+
+email.style.border =
+"2px solid red";
+
+return;
+
+}
+
+if(password.value.length < 6){
+
+error.style.display = "block";
+
+error.innerHTML =
+"Password must be 6+ characters";
+
+password.style.border =
+"2px solid red";
+
+return;
+
+}
+
+try{
+
+await createUserWithEmailAndPassword(
+auth,
+email.value,
+password.value
+);
+
+window.location.href =
+"/login.html";
+
+}
+catch(err){
+
+console.log(err);
+
+error.style.display =
+"block";
+
+error.innerHTML =
+err.message;
+
+email.style.border =
+"2px solid red";
+
+password.style.border =
+"2px solid red";
+
+}
+
+}
+
+window.googleSignup = async function(){
+
+const provider =
+new GoogleAuthProvider();
+
+try{
+
+await signInWithPopup(
+auth,
+provider
+);
+
+window.location.href = "/";
+
+}
+catch(error){
+
+document.getElementById(
+"error"
+).style.display = "block";
+
+document.getElementById(
+"error"
+).innerHTML =
+"Google Signup Failed";
+
+}
+
+}
+
+window.openPhoneSignup = function(){
+
+document.getElementById(
+"phoneBox"
+).style.display = "block";
+
+}
+
+window.recaptchaVerifier =
+new RecaptchaVerifier(
+auth,
+"recaptcha-container",
+{}
+);
+
+window.sendOTP = async function(){
+
+const phone =
+document.getElementById("phone").value;
+
+try{
+
+const confirmationResult =
+await signInWithPhoneNumber(
+auth,
+phone,
+window.recaptchaVerifier
+);
+
+window.confirmationResult =
+confirmationResult;
+
+alert("OTP Sent!");
+
+}
+catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+window.verifyOTP = async function(){
+
+const otp =
+document.getElementById("otp").value;
+
+try{
+
+await window.confirmationResult.confirm(
+otp
+);
+
+window.location.href = "/";
+
+}
+catch(error){
+
+alert("Wrong OTP");
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>

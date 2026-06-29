@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>FireNex | Digital Marketplace</title>
+
 <link rel="icon" type="image/png" href="icon.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <style>
 
@@ -19,7 +18,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+font-family:Poppins,sans-serif;
 }
 
 html{
@@ -29,95 +28,39 @@ scroll-behavior:smooth;
 body{
 
 background:#07111f;
-color:#fff;
+color:white;
 overflow-x:hidden;
 
 }
 
-/* Scrollbar */
+/* Background */
 
-::-webkit-scrollbar{
-width:8px;
+body::before,
+body::after{
+
+content:"";
+position:fixed;
+width:600px;
+height:600px;
+border-radius:50%;
+filter:blur(120px);
+z-index:-1;
+
 }
-
-::-webkit-scrollbar-thumb{
-
-background:#ff9800;
-border-radius:20px;
-
-}
-
-/* Animated Background */
 
 body::before{
 
-content:"";
-
-position:fixed;
-
-width:900px;
-height:900px;
-
-background:radial-gradient(circle,#ff980030,transparent 70%);
-
-top:-300px;
+background:#ff980030;
+top:-250px;
 left:-250px;
-
-animation:move1 12s infinite alternate;
-
-z-index:-2;
 
 }
 
 body::after{
 
-content:"";
-
-position:fixed;
-
-width:900px;
-height:900px;
-
-background:radial-gradient(circle,#3b82f630,transparent 70%);
-
-bottom:-300px;
+background:#2563eb30;
+bottom:-250px;
 right:-250px;
-
-animation:move2 14s infinite alternate;
-
-z-index:-2;
-
-}
-
-@keyframes move1{
-
-0%{
-
-transform:translate(0,0);
-
-}
-
-100%{
-
-transform:translate(180px,120px);
-
-}
-
-}
-
-@keyframes move2{
-
-0%{
-
-transform:translate(0,0);
-
-}
-
-100%{
-
-transform:translate(-180px,-120px);
-
-}
 
 }
 
@@ -126,22 +69,18 @@ transform:translate(-180px,-120px);
 nav{
 
 position:sticky;
-
 top:0;
-
 z-index:999;
 
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
 
-padding:18px 8%;
+padding:15px 20px;
 
-background:rgba(8,17,30,.65);
+background:rgba(7,17,31,.75);
 
-backdrop-filter:blur(18px);
+backdrop-filter:blur(15px);
 
 border-bottom:1px solid rgba(255,255,255,.08);
 
@@ -149,33 +88,24 @@ border-bottom:1px solid rgba(255,255,255,.08);
 
 .logo{
 
-font-size:34px;
-
+font-size:28px;
 font-weight:800;
-
 color:#ff9800;
-
-letter-spacing:1px;
 
 }
 
 .menu{
 
 display:flex;
-
-gap:18px;
+gap:20px;
 
 }
 
 .menu a{
 
 text-decoration:none;
-
-color:#fff;
-
+color:white;
 font-weight:600;
-
-transition:.3s;
 
 }
 
@@ -188,48 +118,35 @@ color:#ff9800;
 .right{
 
 display:flex;
-
-gap:12px;
+gap:10px;
 
 }
 
 .btn{
 
-padding:12px 22px;
+padding:10px 18px;
 
 border:none;
 
-border-radius:12px;
+border-radius:10px;
 
-font-weight:700;
+font-weight:bold;
 
 cursor:pointer;
-
-transition:.3s;
 
 }
 
 .orders{
 
 background:#2563eb;
-
-color:#fff;
+color:white;
 
 }
 
 .logout{
 
 background:#ef4444;
-
-color:#fff;
-
-}
-
-.btn:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 20px 40px rgba(0,0,0,.4);
+color:white;
 
 }
 
@@ -237,171 +154,127 @@ box-shadow:0 20px 40px rgba(0,0,0,.4);
 
 .hero{
 
-padding:40px 8% 25px;
+max-width:1200px;
 
-display:flex;
+margin:auto;
 
-justify-content:space-between;
+padding:35px 20px;
+
+display:grid;
+
+grid-template-columns:1fr 380px;
+
+gap:30px;
 
 align-items:center;
 
-gap:60px;
-
-flex-wrap:wrap;
-
 }
 
-.left{
+.hero h1{
 
-flex:1;
-
-min-width:320px;
-
-}
-
-.left h1{
-
-font-size:52px;
-
+font-size:55px;
 line-height:1.1;
-
-margin-bottom:20px;
+margin-bottom:15px;
 
 }
 
-.left h1 span{
+.hero h1 span{
 
 color:#ff9800;
 
 }
 
-.left p{
-
-font-size:18px;
+.hero p{
 
 color:#cbd5e1;
-
-line-height:1.8;
-
-max-width:650px;
-
+line-height:1.7;
+font-size:17px;
 margin-bottom:20px;
 
 }
 
-.hero-buttons{
+/* Quick Buttons */
+
+.quick-services{
+
 display:grid;
+
 grid-template-columns:repeat(2,1fr);
+
 gap:12px;
+
 margin-top:25px;
-max-width:430px;
+
 }
 
-.hero-stats{
-display:flex;
-justify-content:center;
-gap:12px;
-flex-wrap:wrap;
-margin-top:20px;
-}
+.quick-services a{
 
-.hero-stats div{
-background:rgba(255,255,255,.08);
-padding:10px 16px;
-border-radius:12px;
-font-size:14px;
-font-weight:bold;
-border:1px solid rgba(255,255,255,.12);
-}
-
-.hero-buttons a{
-padding:14px;
-text-align:center;
-border-radius:14px;
 text-decoration:none;
+
+padding:15px;
+
+border-radius:15px;
+
+text-align:center;
+
 font-weight:700;
-font-size:16px;
+
+color:white;
+
 transition:.3s;
+
 }
 
-.start{
+.quick-services a:hover{
+
+transform:translateY(-4px);
+
+}
+
+.ff{
 
 background:#ff9800;
 
-color:white;
-
 }
 
-.discord{
+.insta{
 
-background:#1e293b;
-
-color:white;
-
-}
-
-.whatsapp{
-background:#25D366;
-color:white;
-}
-
-.whatsapp:hover{
-background:#1ebe5d;
-}
-
-.instagram{
 background:linear-gradient(135deg,#833AB4,#E1306C,#F77737);
-color:white;
-}
-
-.facebook{
-background:#1877F2;
-color:white;
-}
-
-.hero-buttons a:hover{
-
-transform:translateY(-5px);
 
 }
 
-/* Hero Right */
+.tiktok{
 
-.right-box{
-
-flex:1;
-
-display:flex;
-
-justify-content:center;
-
-min-width:320px;
+background:#111827;
 
 }
+
+.all{
+
+background:#2563eb;
+
+}
+
+/* Status Card */
 
 .status-card{
 
-width:420px;
-
 background:rgba(255,255,255,.06);
-
-backdrop-filter:blur(20px);
-
-border-radius:30px;
-
-padding:35px;
 
 border:1px solid rgba(255,255,255,.08);
 
-box-shadow:0 25px 50px rgba(0,0,0,.4);
+border-radius:25px;
+
+padding:25px;
+
+backdrop-filter:blur(20px);
 
 }
 
 .status-card h2{
 
 color:#ff9800;
-
-margin-bottom:25px;
+margin-bottom:20px;
 
 }
 
@@ -411,7 +284,7 @@ display:flex;
 
 justify-content:space-between;
 
-padding:18px 0;
+padding:15px 0;
 
 border-bottom:1px solid rgba(255,255,255,.08);
 
@@ -423,23 +296,15 @@ border:none;
 
 }
 
-.status strong{
-
-font-size:17px;
-
-}
-
-/* Section */
+/* Services */
 
 .title{
 
 text-align:center;
 
-font-size:40px;
+font-size:36px;
 
-margin-top:40px;
-
-margin-bottom:45px;
+margin:30px 0;
 
 }
 
@@ -449,21 +314,19 @@ color:#ff9800;
 
 }
 
-/* Services */
-
 .services{
 
-width:85%;
+max-width:1200px;
 
 margin:auto;
 
+padding:0 20px 70px;
+
 display:grid;
 
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 
-gap:35px;
-
-padding-bottom:80px;
+gap:20px;
 
 }
 
@@ -471,67 +334,35 @@ padding-bottom:80px;
 
 background:rgba(255,255,255,.05);
 
-backdrop-filter:blur(20px);
-
-border-radius:30px;
+border-radius:25px;
 
 padding:25px;
 
 border:1px solid rgba(255,255,255,.08);
 
-transition:.35s;
-
-position:relative;
-
-overflow:hidden;
+transition:.3s;
 
 }
 
 .card:hover{
 
-transform:translateY(-12px) scale(1.02);
+transform:translateY(-8px);
 
 border-color:#ff9800;
-
-box-shadow:0 35px 60px rgba(0,0,0,.45);
-
-}
-
-.card::before{
-
-content:"";
-
-position:absolute;
-
-width:180px;
-
-height:180px;
-
-background:#ff980015;
-
-border-radius:50%;
-
-top:-60px;
-
-right:-60px;
 
 }
 
 .icon{
 
-font-size:55px;
+font-size:50px;
 
-margin-bottom:20px;
-
-color:#ff9800;
+margin-bottom:15px;
 
 }
 
 .card h2{
 
-font-size:24px;
-
-margin-bottom:18px;
+margin-bottom:15px;
 
 }
 
@@ -539,113 +370,196 @@ margin-bottom:18px;
 
 list-style:none;
 
-margin-bottom:30px;
-
 }
 
-.card ul li{
+.card li{
 
-padding:5px 0;
+padding:6px 0;
 
 color:#d1d5db;
-
-font-size:15px;
 
 }
 
 .open{
 
-font-size:15px;
-
 display:block;
+
+margin-top:20px;
 
 text-align:center;
 
-padding:13px;
-
-border-radius:14px;
-
-text-decoration:none;
-
-font-weight:700;
+padding:14px;
 
 background:#ff9800;
 
 color:white;
 
-transition:.3s;
+text-decoration:none;
+
+border-radius:12px;
+
+font-weight:bold;
 
 }
 
-.open:hover{
+/* Floating App */
 
-background:#ffb547;
+.app-float{
+
+position:fixed;
+
+bottom:20px;
+
+right:20px;
+
+background:#2563eb;
+
+color:white;
+
+padding:12px 18px;
+
+border-radius:40px;
+
+text-decoration:none;
+
+font-weight:bold;
+
+box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+z-index:999;
 
 }
 
-/* Responsive */
+/* Mobile */
 
 @media(max-width:900px){
 
 .hero{
 
-flex-direction:column;
+grid-template-columns:1fr;
+
+padding:25px 15px;
+
+}
+
+.hero h1{
+
+font-size:38px;
 
 text-align:center;
 
 }
 
-.left h1{
-font-size:38px;
+.hero p{
+
+text-align:center;
+
 }
 
-.hero{
-padding:25px 20px;
+.quick-services{
+
+grid-template-columns:repeat(2,1fr);
+
 }
 
-.hero-buttons{
-max-width:100%;
+.status-card{
+
+margin-top:10px;
+
 }
 
-.hero-stats{
-margin-top:15px;
-}
 .menu{
 
 display:none;
 
 }
 
-nav{
+.right{
 
-padding:18px 20px;
+gap:6px;
+
+}
+
+.btn{
+
+padding:8px 12px;
+font-size:13px;
+
+}
+
+.logo{
+
+font-size:24px;
 
 }
 
 .services{
 
-width:92%;
+padding:0 15px 50px;
 
 }
 
 }
 
-.app-float{
+.mobile-nav{
+display:none;
+}
+
+@media(max-width:900px){
+
+.mobile-nav{
+
 position:fixed;
-right:15px;
-bottom:15px;
-background:#2563eb;
+
+bottom:0;
+left:0;
+
+width:100%;
+
+background:#111827;
+
+display:flex;
+
+justify-content:space-around;
+
+padding:12px 0;
+
+border-top:1px solid rgba(255,255,255,.08);
+
+z-index:9999;
+
+}
+
+.mobile-nav a{
+
 color:white;
-padding:10px 15px;
-border-radius:50px;
+
 text-decoration:none;
-font-weight:bold;
-font-size:14px;
-box-shadow:0 8px 25px rgba(0,0,0,.35);
-z-index:999;
+
+font-size:13px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+gap:4px;
+
+font-weight:600;
+
+}
+
+body{
+
+padding-bottom:75px;
+
+}
+
 }
 
 </style>
+
 </head>
 <body>
 
@@ -662,23 +576,19 @@ z-index:999;
 <div class="menu">
 <a href="#">Home</a>
 <a href="#services">Services</a>
-<a href="dashboard.html">Orders</a>
+<a href="dashboard.html">Dashboard</a>
 </div>
 
 <div class="right">
 
 <button class="btn orders"
 onclick="location.href='dashboard.html'">
-
 My Orders
-
 </button>
 
 <button class="btn logout"
 onclick="logout()">
-
 Logout
-
 </button>
 
 </div>
@@ -687,307 +597,225 @@ Logout
 
 <section class="hero">
 
-<div class="left">
+<div>
 
 <h1>
-
 Nepal's <span>Digital</span><br>
 Marketplace
-
 </h1>
 
 <p>
 
-Top up your favorite games and boost your social media with
-instant delivery, secure payments and trusted support.
+Top up your favorite games and boost your social media instantly.
+Safe payments, trusted support and lightning-fast delivery.
 
 </p>
 
-<div class="hero-stats">
+<div class="quick-services">
 
-<div>
-⭐ 2000+ Orders
-</div>
-
-<div>
-⚡ Instant Delivery
-</div>
-
-<div>
-🔒 Secure Payment
-</div>
-
-</div>
-
-<div class="hero-buttons">
-
-<a href="freefire.html" class="start">
+<a href="freefire.html" class="ff">
 🎮 Free Fire
 </a>
 
-<a href="instagram.html" class="discord">
+<a href="instagram.html" class="insta">
 📸 Instagram
 </a>
 
-<a href="tiktok.html" class="facebook">
+<a href="tiktok.html" class="tiktok">
 🎵 TikTok
 </a>
 
-<a href="#services" class="instagram">
+<a href="#services" class="all">
 📂 All Services
 </a>
 
 </div>
-</div>
 
-<div class="right-box">
+</div>
 
 <div class="status-card">
 
 <h2>
-
 🔥 FireNex Status
-
 </h2>
 
 <div class="status">
-
 <span>🟢 Website</span>
-
 <strong>Online</strong>
-
 </div>
 
 <div class="status">
-
 <span>⚡ Delivery</span>
-
 <strong>Instant</strong>
-
 </div>
 
 <div class="status">
-
 <span>👥 Support</span>
-
-<strong>11AM-8PM</strong>
-
+<strong>11AM - 8PM</strong>
 </div>
 
 <div class="status">
-
 <span>🔒 Security</span>
-
 <strong>Protected</strong>
-
-</div>
-
 </div>
 
 </div>
 
 </section>
 
-
 <h1 class="title" id="services">
-
 Our <span>Services</span>
-
 </h1>
 
 <section class="services">
 
 <div class="card">
 
-<div class="icon">
+<div class="icon">🎮</div>
 
-🎮
-
-</div>
-
-<h2>
-
-Free Fire
-
-</h2>
+<h2>Free Fire</h2>
 
 <ul>
 
 <li>💎 Diamond Top Up</li>
-
 <li>👑 Weekly Membership</li>
-
 <li>⚡ Instant Delivery</li>
-
-<li>🛡 Safe & Trusted</li>
+<li>🛡 Trusted Service</li>
 
 </ul>
 
-<a
-href="freefire.html"
-class="open">
-
+<a href="freefire.html" class="open">
 OPEN SERVICE
-
 </a>
 
 </div>
 
-
-
 <div class="card">
 
-<div class="icon">
+<div class="icon">📸</div>
 
-📸
-
-</div>
-
-<h2>
-
-Instagram
-
-</h2>
+<h2>Instagram</h2>
 
 <ul>
 
 <li>❤️ Likes</li>
-
-<li>👁 Views</li>
-
 <li>👥 Followers</li>
-
-<li>🚀 Fast Delivery</li>
+<li>👁 Views</li>
+<li>⚡ Fast Delivery</li>
 
 </ul>
 
-<a
-href="instagram.html"
-class="open">
-
+<a href="instagram.html" class="open">
 OPEN SERVICE
-
 </a>
 
 </div>
+
 <div class="card">
 
-<div class="icon">
+<div class="icon">🎵</div>
 
-🎵
-
-</div>
-
-<h2>
-
-TikTok
-
-</h2>
+<h2>TikTok</h2>
 
 <ul>
 
 <li>❤️ Likes</li>
-
-<li>👁 Views</li>
-
 <li>👥 Followers</li>
-
-<li>🚀 Fast Delivery</li>
+<li>👁 Views</li>
+<li>⚡ Fast Delivery</li>
 
 </ul>
 
-<a
-href="tiktok.html"
-class="open">
-
+<a href="tiktok.html" class="open">
 OPEN SERVICE
-
 </a>
 
 </div>
+
 </section>
 
-<section
-style="
-width:85%;
-margin:auto;
-padding-bottom:80px;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:25px;
-">
+<section class="services">
 
 <div class="card">
-
-<h2>2000+</h2>
-
+<h2>⭐ 2000+</h2>
 <p>Total Orders</p>
-
 </div>
 
 <div class="card">
-
-<h2>500+</h2>
-
+<h2>😊 500+</h2>
 <p>Happy Customers</p>
-
 </div>
 
 <div class="card">
-
-<h2>99.9%</h2>
-
-<p>Uptime</p>
-
+<h2>⚡ Instant</h2>
+<p>Fast Delivery</p>
 </div>
 
 <div class="card">
-
-<h2>11AM-8PM</h2>
-
-<p>Support</p>
-
+<h2>🔒 100%</h2>
+<p>Safe Payments</p>
 </div>
 
 </section>
 
-<footer
-style="
-background:#0b1220;
-padding:40px;
-text-align:center;
-border-top:1px solid rgba(255,255,255,.08);
-">
+<footer style="text-align:center;padding:40px 20px;background:#0b1220;">
 
-<h2 style="color:#ff9800">
-
+<h2 style="color:#ff9800;">
 🔥 FireNex
-
 </h2>
 
-<p
-style="
-margin-top:15px;
-color:#94a3b8;
-">
-
+<p style="margin-top:15px;color:#94a3b8;">
 Nepal's Trusted Digital Marketplace
-
 </p>
 
-<p
-style="
-margin-top:20px;
-color:#64748b;
-">
+<div style="margin-top:25px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
 
+<a href="https://wa.me/9779708567948"
+style="background:#25D366;color:white;padding:10px 18px;border-radius:10px;text-decoration:none;">
+WhatsApp
+</a>
+
+<a href="https://www.facebook.com/NirmalChettri9814"
+style="background:#1877F2;color:white;padding:10px 18px;border-radius:10px;text-decoration:none;">
+Facebook
+</a>
+
+<a href="https://www.instagram.com/nirmalkathayat211/"
+style="background:#E1306C;color:white;padding:10px 18px;border-radius:10px;text-decoration:none;">
+Instagram
+</a>
+
+</div>
+
+<p style="margin-top:30px;color:#64748b;">
 © 2026 FireNex. All Rights Reserved.
-
 </p>
 
 </footer>
 
-<!-- PASTE THE SCRIPT HERE -->
+<div class="mobile-nav">
+
+<a href="#">
+🏠
+Home
+</a>
+
+<a href="#services">
+📂
+Services
+</a>
+
+<a href="dashboard.html">
+📦
+Orders
+</a>
+
+<a href="GameBoxTopup.apk">
+📱
+App
+</a>
+
+</div>
 
 <script type="module">
 

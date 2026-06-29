@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<link rel="manifest" href="manifest.json">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FireNex Topup - Free Fire Diamond Topup Nepal</title>
+
+<meta name="description" content="FireNex Topup is Nepal's trusted Free Fire Diamond Topup website. Fast, Secure & Instant Delivery.">
+
+<meta name="keywords" content="FireNex, FireNex Topup, Free Fire Topup Nepal, Diamond Topup, FF Diamonds Nepal">
+<meta name="google-site-verification" content="3KydnYwlZQ_ghXV_d1r7TzjVh74F1xN1CnvgFXd4eAg" />
+<link rel="icon" type="png" href="icon.png">
+
+
+<style>
+
+body{
+background:#0f172a;
+font-family:Arial;
+color:white;
+padding:20px;
+text-align:center;
+}
+
+.container{
+max-width:420px;
+margin:30px auto;
+background:#1e293b;
+padding:25px;
+border-radius:20px;
+box-sizing:border-box;
+}
+h1{
+color:#ff9800;
+}
+.hero{
+margin:20px 0 30px;
+padding:30px 20px;
+border-radius:20px;
+background:linear-gradient(135deg,#ff9800,#ff5722);
+color:white;
+text-align:center;
+box-shadow:0 10px 30px rgba(255,152,0,.35);
+overflow:hidden;
+}
+
+.hero h2{
+margin:0;
+font-size:28px;
+}
+
+.hero p{
+margin-top:10px;
+opacity:.95;
+}
+
+.hero-buttons{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:20px;
+flex-wrap:wrap;
+}
+
+.hero-buttons a{
+text-decoration:none;
+padding:13px 24px;
+border-radius:10px;
+font-weight:bold;
+transition:.3s;
+}
+
+.buy-btn{
+background:white;
+color:#ff5722;
+}
+
+.profile-btn{
+background:#0f172a;
+color:white;
+}
+
+.hero-buttons a:hover{
+transform:translateY(-3px);
+}
+
+input,select,button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+}
+
+input,select{
+background:#0f172a;
+color:white;
+}
+
+button{
+background:#ff9800;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.qr{
+margin-top:20px;
+}
+
+.qr img{
+width:100%;
+border-radius:10px;
+}
+
+.socials a{
+display:inline-block;
+margin:10px;
+padding:10px 15px;
+background:#ff9800;
+color:white;
+text-decoration:none;
+border-radius:10px;
+}
+.package-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin:20px 0;
+}
+
+.package-card{
+background:#0f172a;
+border:2px solid transparent;
+border-radius:15px;
+padding:14px;
+cursor:pointer;
+transition:.3s;
+}
+
+.package-card:hover{
+border-color:#ff9800;
+transform:translateY(-3px);
+}
+
+.package-card.active{
+border:2px solid #ff9800;
+background:#1f2937;
+box-shadow:0 0 18px rgba(255,152,0,.45);
+}
+
+.package-card h3{
+margin:0;
+color:#fff;
+font-size:20px;
+}
+
+.package-card p{
+margin-top:8px;
+color:#ff9800;
+font-weight:bold;
+}
+
+</style>
+
+
+</head>
+
+<body>
+<h1 style="display:none;">FIRENEX - Free Fire Diamond Topup Nepal</h1>
+<a href="GameBoxTopup.apk" class="app-float">
+📱 Firenex app
+</a>
+
+<style>
+.app-float{
+position:fixed;
+left:20px;
+bottom:20px;
+background:#2563eb;
+color:white;
+padding:12px 16px;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold;
+box-shadow:0 4px 10px rgba(0,0,0,.3);
+z-index:9999;
+}
+</style>
+<div class="social-float">
+
+<a href="https://wa.me/+9779708567948" target="_blank" class="whatsapp">
+WhatsApp
+</a>
+
+<!-- <a href="https://www.facebook.com/NirmalChettri9814" target="_blank" class="facebook">
+Facebook
+</a> -->
+
+<a href="https://discordapp.com/users/1510309159122501862" target="_blank" class="Discord">
+Discord
+</a>
+
+</div>
+
+<style>
+.social-float{
+position:fixed;
+right:20px;
+bottom:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
+z-index:9999;
+}
+
+.social-float a{
+padding:12px 18px;
+border-radius:30px;
+color:white;
+text-decoration:none;
+font-weight:bold;
+text-align:center;
+box-shadow:0 4px 10px rgba(0,0,0,.3);
+}
+
+.whatsapp{
+background:#25D366;
+}
+
+.Discord{
+background:#1877F2;
+}
+
+.facebook{
+background:#E4405F;
+}
+</style>
+<script type="module">
+
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
+
+authDomain: "gamebox-58ca6.firebaseapp.com",
+
+projectId: "gamebox-58ca6",
+
+storageBucket: "gamebox-58ca6.firebasestorage.app",
+
+messagingSenderId: "562074668636",
+
+appId: "1:562074668636:web:0fea328c5beefb4b5d2099"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+async function checkStock(){
+
+const snap = await getDoc(doc(db,"settings","topup"));
+
+if(snap.exists() && snap.data().available === false){
+
+document.body.innerHTML = `
+<div style="
+height:100vh;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+font-family:Arial;
+text-align:center;
+">
+
+<div>
+<h2>⚠️ Topup Temporarily Unavailable</h2>
+
+<p style="color:#aaa;font-size:16px;">
+Topup stock is not available right now.<br>
+Please try again later.
+</p>
+
+</div>
+
+</div>
+`;
+
+}
+
+}
+checkStock();
+
+window.previewImage = function(event){
+
+const file = event.target.files[0];
+
+if(!file){
+return;
+}
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+const preview =
+document.getElementById("preview");
+
+preview.src = e.target.result;
+
+preview.style.display = "block";
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href = "/login.html";
+
+}
+
+});
+
+window.logout = async function(){
+
+await signOut(auth);
+
+window.location.href = "/login.html";
+
+}
+
+window.submitOrder = async function(){
+await checkStock();
+const submitBtn =
+document.getElementById("submitBtn");
+
+if(submitBtn.disabled) return;
+
+submitBtn.disabled = true;
+submitBtn.innerText = "Submitting...";
+const uid =
+document.getElementById("uid").value;
+
+const pack =
+document.getElementById("package").value;
+
+if(pack === ""){
+alert("Select a package");
+submitBtn.disabled = false;
+submitBtn.innerText = "Submit Order";
+return;
+}
+
+const screenshot =
+document.getElementById("screenshot").files[0];
+if(screenshot && screenshot.size > 10 * 1024 * 1024){
+
+alert("Screenshot must be less than 5MB");
+
+submitBtn.disabled = false;
+submitBtn.innerText = "Submit Order";
+
+return;
+
+}
+
+if(uid.trim()==""){
+alert("Enter UID");
+return;
+}
+
+if(!screenshot){
+alert("Upload payment screenshot");
+return;
+}
+
+try{
+
+const formData = new FormData();
+
+formData.append("file", screenshot);
+
+formData.append("upload_preset", "gamebox");
+
+const response = await fetch(
+
+"https://api.cloudinary.com/v1_1/dsfhvnlqw/image/upload",
+
+{
+method:"POST",
+body:formData
+}
+
+);
+
+const data = await response.json();
+const orderId =
+"GB-" +
+Date.now().toString().slice(-8);
+await addDoc(collection(db,"orders"),{
+
+orderId: orderId,
+
+uid: uid,
+
+package: pack,
+
+screenshot: data.secure_url,
+
+status: "Processing",
+
+email: auth.currentUser.email,
+
+time: new Date()
+
+});s
+const webhook = "https://discord.com/api/webhooks/1510500668388020374/eUNYSpnB-a9OASxCsp_sp8-Uo0AXIenp72LZcVLgXS4E62EQNd0rPFIDduuXchoqEzFa";
+
+await fetch(webhook,{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body: JSON.stringify({
+content:
+`🎮 New Firenex Order
+
+🆔 Order ID: ${orderId}
+
+📧 Email: ${auth.currentUser.email}
+
+🎮 UID: ${uid}
+
+💎 Package: ${pack}
+
+📊 Status: Processing`
+})
+});
+
+document.body.innerHTML = `
+
+<div style="
+
+background:#0f172a;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Arial;
+padding:20px;
+
+">
+
+<div style="
+
+background:#1e293b;
+padding:30px;
+border-radius:20px;
+max-width:400px;
+text-align:center;
+color:white;
+
+">
+
+<h1 style="color:#00ff88;">
+🎉 Order Submitted!
+</h1>
+
+<h2 style="color:#ff9800;">
+Order ID:
+${orderId}
+</h2>
+
+<p style="margin-top:15px;line-height:25px;">
+
+If your order gets delayed more than 30 minutes,
+message us on WhatsApp.
+
+Otherwise please wait some time.
+
+</p>
+
+<a href="https://wa.me/9779708567948"
+
+style="
+
+display:inline-block;
+margin-top:20px;
+padding:12px 20px;
+background:#ff9800;
+color:white;
+text-decoration:none;
+border-radius:10px;
+font-weight:bold;
+
+">
+
+Contact WhatsApp
+
+</a>
+
+<br><br>
+
+<a href="/"
+
+style="
+
+display:inline-block;
+padding:12px 20px;
+background:#2563eb;
+color:white;
+text-decoration:none;
+border-radius:10px;
+font-weight:bold;
+
+">
+
+Back To Home
+
+</a>
+
+</div>
+
+</div>
+
+`;
+
+}
+catch(error){
+
+submitBtn.disabled = false;
+submitBtn.innerText = "Submit Order";
+
+alert(error.message);
+
+}
+
+}
+const cards = document.querySelectorAll(".package-card");
+
+cards.forEach(card=>{
+card.onclick=()=>{
+
+cards.forEach(c=>c.classList.remove("active"));
+
+card.classList.add("active");
+
+document.getElementById("package").value = card.dataset.value;
+
+document.getElementById("selectedPackageText").innerText = card.dataset.value;
+
+document.getElementById("selectedPackageBox").style.display = "block";
+
+setTimeout(()=>{
+
+document.getElementById("selectedPackageBox").scrollIntoView({
+behavior:"smooth",
+block:"start"
+});
+
+},200);
+
+};
+});
+window.updateSummaryUID = function () {
+    document.getElementById("summaryUID").innerText =
+        document.getElementById("uid").value || "Not entered";
+};
+</script>
+
+<div class="container">
+<div style="text-align:right;">
+
+<a href="dashboard.html">
+
+<button style="
+
+width:auto;
+padding:10px 5px;
+background:#2563eb;
+
+
+">
+
+My Profile
+
+</button>
+
+</a>
+
+</div>
+
+<button onclick="logout()"
+
+style="
+
+width:auto;
+padding:10px 15px;
+background:red;
+float:right;
+margin-top: 0px;
+
+">
+
+Logout
+
+</button>
+
+<img src="icon.png"
+style="
+width:130px;
+margin-bottom:5px;
+margin-left:60px;
+">
+
+<h1>FireNex</h1>
+
+
+<div class="hero">
+
+<h2>⚡ Instant Free Fire Top-Up</h2>
+
+<p>• Secure • Trusted</p>
+
+<div class="hero-buttons">
+
+<a href="#package-section" class="buy-btn">
+Buy Diamonds
+</a>
+
+<a href="dashboard.html" class="profile-btn">
+My Orders
+</a>
+
+</div>
+
+</div>
+<div style="
+display:flex;
+justify-content:center;
+gap:10px;
+flex-wrap:wrap;
+margin:20px 0;
+">
+
+<span style="
+background:#16a34a;
+padding:8px 12px;
+border-radius:20px;
+">
+TIME:11AM-8PM
+</span>
+
+<span style="
+background:#2563eb;
+padding:8px 12px;
+border-radius:20px;
+">
+🔒 Secure Payment
+</span>
+
+<span style="
+background:#f59e0b;
+padding:8px 12px;
+border-radius:20px;
+">
+💬 24/7 Support
+</span>
+
+</div>
+
+
+<div id="package-section"></div>
+<input
+type="text"
+id="uid"
+placeholder="Enter Free Fire UID"
+oninput="updateSummaryUID()">
+<div class="package-grid">
+
+<div class="package-card" data-value="25 Diamonds - Rs 30">
+<h3>💎 25 Diamonds</h3>
+<p>Rs 30</p>
+</div>
+
+<div class="package-card" data-value="50 Diamonds - Rs 55">
+<h3>💎 50 Diamonds</h3>
+<p>Rs 55</p>
+</div>
+
+<div class="package-card" data-value="115 Diamonds - Rs 105">
+<h3>💎 115 Diamonds</h3>
+<p>Rs 105</p>
+</div>
+<div class="package-card" data-value="240 Diamonds - Rs 210">
+<h3>💎 240 Diamonds</h3>
+<p>Rs 210</p>
+</div>
+
+<div class="package-card" data-value="355 Diamonds - Rs 315">
+<h3>💎 355 Diamonds</h3>
+<p>Rs 315</p>
+</div>
+
+<div class="package-card" data-value="480 Diamonds - Rs 420">
+<h3>💎 480 Diamonds</h3>
+<p>Rs 420</p>
+</div>
+
+<div class="package-card" data-value="610 Diamonds - Rs 530">
+<h3>💎 610 Diamonds</h3>
+<p>Rs 530</p>
+</div>
+
+<div class="package-card" data-value="725 Diamonds - Rs 635">
+<h3>💎 725 Diamonds</h3>
+<p>Rs 635</p>
+</div>
+
+<div class="package-card" data-value="850 Diamonds - Rs 740">
+<h3>💎 850 Diamonds</h3>
+<p>Rs 740</p>
+</div>
+
+<div class="package-card" data-value="965 Diamonds - Rs 850">
+<h3>💎 965 Diamonds</h3>
+<p>Rs 850</p>
+</div>
+
+<div class="package-card" data-value="1090 Diamonds - Rs 960">
+<h3>💎 1090 Diamonds</h3>
+<p>Rs 960</p>
+</div>
+
+<div class="package-card" data-value="1240 Diamonds - Rs 1070">
+<h3>💎 1240 Diamonds</h3>
+<p>Rs 1070</p>
+</div>
+
+<div class="package-card" data-value="1480 Diamonds - Rs 1280">
+<h3>💎 1480 Diamonds</h3>
+<p>Rs 1280</p>
+</div>
+
+<div class="package-card" data-value="2090 Diamonds - Rs 1810">
+<h3>💎 2090 Diamonds</h3>
+<p>Rs 1810</p>
+</div>
+
+<div class="package-card" data-value="2530 Diamonds - Rs 2170">
+<h3>💎 2530 Diamonds</h3>
+<p>Rs 2170</p>
+</div>
+
+<div class="package-card" data-value="5060 Diamonds - Rs 4340">
+<h3>💎 5060 Diamonds</h3>
+<p>Rs 4340</p>
+</div>
+<div class="package-card" data-value="Weekly Membership - Rs 210">
+<h3>💎 Weekly Membership</h3>
+<p>Rs 210</p>
+</div>
+
+<div class="package-card" data-value="Monthly Membership - Rs 1030">
+<h3>💎 Monthly Membership</h3>
+<p>Rs 1030</p>
+</div>
+</div>
+
+<select id="package" style="display:none;">
+
+<option value="">Select Diamond Package</option>
+
+<option value="Weekly Membership - Rs 210">Weekly Membership - Rs 210</option>
+<option value="Monthly Membership - Rs 1030">Monthly Membership - Rs 1030</option>
+<option value="25 Diamonds - Rs 30">25 Diamonds - Rs 30</option>
+<option value="50 Diamonds - Rs 55">50 Diamonds - Rs 55</option>
+<option value="115 Diamonds - Rs 105">115 Diamonds - Rs 105</option>
+<option value="240 Diamonds - Rs 210">240 Diamonds - Rs 210</option>
+<option value="355 Diamonds - Rs 315">355 Diamonds - Rs 315</option>
+<option value="480 Diamonds - Rs 420">480 Diamonds - Rs 420</option>
+<option value="610 Diamonds - Rs 530">610 Diamonds - Rs 530</option>
+<option value="725 Diamonds - Rs 635">725 Diamonds - Rs 635</option>
+<option value="850 Diamonds - Rs 740">850 Diamonds - Rs 740</option>
+<option value="965 Diamonds - Rs 850">965 Diamonds - Rs 850</option>
+<option value="1090 Diamonds - Rs 960">1090 Diamonds - Rs 960</option>
+<option value="1240 Diamonds - Rs 1070">1240 Diamonds - Rs 1070</option>
+<option value="1480 Diamonds - Rs 1280">1480 Diamonds - Rs 1280</option>
+<option value="2090 Diamonds - Rs 1810">2090 Diamonds - Rs 1810</option>
+<option value="2530 Diamonds - Rs 2170">2530 Diamonds - Rs 2170</option>
+<option value="5060 Diamonds - Rs 4340">5060 Diamonds - Rs 4340</option>
+</select>
+<div id="selectedPackageBox" style="
+display:none;
+background:#0f172a;
+border:2px solid #ff9800;
+border-radius:12px;
+padding:15px;
+margin:20px 0;
+text-align:left;
+">
+
+<h3 style="margin:0;color:#ff9800;">
+📋 Order Summary
+</h3>
+
+<p><b>UID:</b> <span id="summaryUID">Not entered</span></p>
+
+<p><b>Package:</b> <span id="selectedPackageText">Not selected</span></p>
+
+<p><b>Status:</b> Waiting for Payment</p>
+
+</div>
+<div class="qr">
+
+<h3 style="color:#ff9800;">💳 Complete Your Payment</h3>
+
+<p style="line-height:24px;">
+1️⃣ Scan the QR code below.<br>
+2️⃣ Upload the payment screenshot.<br>
+3️⃣ Click <b>Submit Order</b>.
+</p>
+
+<img src="imahges/qr.jpg" alt="QR Payment">
+
+</div>
+
+<input
+type="file"
+id="screenshot"
+accept=".jpg,.jpeg,.png,.webp"
+onchange="previewImage(event)"
+required>
+
+<img
+id="preview"
+style="
+display:none;
+width:100%;
+margin-top:15px;
+border-radius:10px;
+">
+
+<p style="font-size:13px;color:#ff9800;margin-top:8px;">
+Enter Payment Screenshot^
+</p>
+
+<div style="
+background:#1e293b;
+padding:18px;
+border-radius:12px;
+margin-top:20px;
+border-left:5px solid #22c55e;
+text-align:left;
+">
+
+<h3 style="margin-top:0;color:#22c55e;">
+⚡ Delivery Information
+</h3>
+
+<p>🕒 <b>Estimated Delivery:</b> 5–30 Minutes</p>
+
+<p>📌 Most orders are completed within 10-15 minutes.</p>
+
+<p>💬 If your order takes more than 40 minutes, contact us on WhatsApp.</p>
+
+</div>
+
+<p style="font-size:13px;color:#ff4d4d;margin-top:15px;line-height:20px;"> NOTE: If you upload wrong screenshot of payment or entered wrong UID, contact on WhatsApp otherwise there will be no topup on your ID. </p>
+<button id="submitBtn" type="button" onclick="submitOrder()">
+🚀 Submit Order
+</button>
+
+
+</div>
+
+
+
+
+</body>
+</html>
+

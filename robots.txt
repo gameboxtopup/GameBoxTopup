@@ -1,5 +1,4 @@
 User-agent: *
-
 Allow: /
 
 Sitemap: https://firenextopup.vercel.app/sitemap.xml

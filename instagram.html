@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>FireNex Instagram</title>
+<link rel="icon" type="image/png" href="icon.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
@@ -26,17 +27,18 @@ body{
 margin:0;
 min-height:100vh;
 
+display:flex;
+align-items:flex-start;
+justify-content:center;
+
 background:#050816;
 color:white;
 
-display:flex;
-justify-content:center;
-align-items:center;
+overflow-y:auto;
 
-overflow:hidden;
+padding:30px 0;
 
 }
-
 
 
 /* floating lights */
@@ -351,8 +353,89 @@ color:#aaa;
 text-decoration:none;
 
 }
+.payment-box{
+
+margin-top:25px;
+
+padding:25px;
+
+background:#ffffff10;
+
+border-radius:25px;
+
+text-align:center;
+
+}
 
 
+.payment-box h3{
+
+color:#ff9800;
+
+}
+
+
+.payment-box p{
+
+color:#ff5555;
+
+}
+
+
+.qr{
+
+width:320px;
+
+max-width:100%;
+
+border-radius:25px;
+
+margin:20px auto;
+
+display:block;
+
+box-shadow:0 20px 50px #0008;
+
+}
+
+.payment-box input{
+
+opacity:.5;
+
+}
+
+
+.payment-box button{
+
+background:#ff9800;
+
+color:white;
+
+cursor:pointer;
+
+}
+.upload-box{
+
+margin-top:20px;
+
+padding:20px;
+
+border:2px dashed #ff9800;
+
+border-radius:20px;
+
+color:#ff9800;
+
+cursor:pointer;
+
+}
+
+
+.upload-box input{
+
+margin-top:15px;
+
+}
 </style>
 
 </head>
@@ -365,8 +448,19 @@ text-decoration:none;
 
 <div class="container">
 
-
 <div class="logo">
+
+<img
+src="icon.png"
+alt="FireNex Logo"
+style="
+width:90px;
+height:90px;
+display:block;
+margin:0 auto 12px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(255,152,0,.35);
+">
 
 🔥 FireNex
 
@@ -459,13 +553,40 @@ Rs <span id="price">0</span>
 <div class="error" id="error"></div>
 
 
-<button>
+<div class="payment-box">
 
-Place Order 🚀
+<h3>💳 Payment</h3>
 
+<p>
+Scan QR and pay
+</p>
+
+
+<img src="/imahges/qr.jpg" class="qr">
+
+
+<label>
+Upload Payment Screenshot
+</label>
+
+
+<div class="upload-box">
+
+📸 Upload Payment Screenshot
+
+<input 
+type="file"
+id="paymentScreenshot"
+accept="image/*">
+
+</div>
+
+<button onclick="placeInstagramOrder()">
+Submit Payment
 </button>
 
 
+</div>
 <a href="index.html" class="home">
 
 ← Back Home
@@ -534,7 +655,222 @@ price.innerHTML =
 🔥 <span>FireNex App</span>
 
 </a>
+<script type="module">
 
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+
+
+const firebaseConfig = {
+
+apiKey:"AIzaSyAT1jHTWbIO8u-pMfF7liOz4rB6WIXSrIQ",
+authDomain:"gamebox-58ca6.firebaseapp.com",
+projectId:"gamebox-58ca6",
+storageBucket:"gamebox-58ca6.firebasestorage.app"
+
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+console.log("Not logged in");
+}
+
+});
+
+
+
+window.placeInstagramOrder = async function(){
+
+const submitBtn =
+document.querySelector(".payment-box button");
+
+if(submitBtn.disabled){
+    return;
+}
+
+submitBtn.disabled = true;
+submitBtn.innerText = "Submitting...";
+
+try{
+
+let file =
+document.getElementById("paymentScreenshot").files[0];
+
+let qty =
+Number(document.getElementById("qty").value);
+
+if(file && file.size > 8 * 1024 * 1024){
+    alert("Screenshot must be under 8MB");
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Submit Payment";
+    return;
+}
+
+if(qty < 10 || qty > 100000){
+    alert("Quantity must be between 10 - 100000");
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Submit Payment";
+    return;
+}
+
+if(!file){
+    alert("Upload screenshot");
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Submit Payment";
+    return;
+}
+
+let price = qty * 0.025;
+
+const formData = new FormData();
+formData.append("file", file);
+formData.append("upload_preset", "gamebox");
+
+const response = await fetch(
+"https://api.cloudinary.com/v1_1/dsfhvnlqw/image/upload",
+{
+method:"POST",
+body:formData
+}
+);
+
+const data = await response.json();
+
+const screenshot = data.secure_url;
+
+const orderId =
+"GB-" + Date.now().toString().slice(-8);
+
+await addDoc(collection(db,"orders"),{
+
+orderId:orderId,
+
+email: auth.currentUser
+? auth.currentUser.email
+: "Instagram User",
+
+uid:"Instagram",
+
+package:
+"Instagram Likes " + qty +
+" - Rs " + price.toFixed(2),
+
+screenshot:screenshot,
+
+status:"Processing",
+
+time:new Date()
+
+});
+
+document.body.innerHTML = `
+
+<div style="
+background:#0f172a;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Arial;
+padding:20px;
+">
+
+<div style="
+background:#1e293b;
+padding:30px;
+border-radius:20px;
+max-width:400px;
+text-align:center;
+color:white;
+">
+
+<h1 style="color:#00ff88;">
+🎉 Order Submitted!
+</h1>
+
+<h2 style="color:#ff9800;">
+Order ID:<br>
+${orderId}
+</h2>
+
+<p>
+Instagram Likes: ${qty}<br>
+Amount: Rs ${price.toFixed(2)}
+</p>
+
+<p>
+Your order is now Processing.
+</p>
+
+<a href="https://wa.me/9779708567948"
+style="
+display:inline-block;
+margin-top:20px;
+padding:12px 20px;
+background:#ff9800;
+color:white;
+text-decoration:none;
+border-radius:10px;
+font-weight:bold;
+">
+Contact WhatsApp
+</a>
+
+<br><br>
+
+<a href="index.html"
+style="
+display:inline-block;
+padding:12px 20px;
+background:#2563eb;
+color:white;
+text-decoration:none;
+border-radius:10px;
+font-weight:bold;
+">
+Back Home
+</a>
+
+</div>
+
+</div>
+
+`;
+
+}catch(error){
+
+submitBtn.disabled = false;
+submitBtn.innerText = "Submit Payment";
+
+alert(error.message);
+
+}
+
+};
+
+</script>
 </body>
 
 </html>

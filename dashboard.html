@@ -93,8 +93,58 @@ font-weight:bold;
 Facebook Support
 </a>
 
+<a href="https://www.instagram.com/nirmalkathayat211/"
+target="_blank"
+style="
+display:inline-block;
+padding:12px 20px;
+background:#E4405F;
+color:white;
+text-decoration:none;
+border-radius:10px;
+margin:5px;
+font-weight:bold;
+">
+Instagram Support
+</a>
+
 </div>
 
+<div class="header">
+
+<div class="logo">
+🔥 FireNex
+</div>
+
+<a href="index.html">
+<button>🏠 Home</button>
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>👤 My Profile</h2>
+
+<p id="userEmail">
+Loading...
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>📦 My Orders</h2>
+
+<div id="ordersContainer">
+
+<div class="empty">
+Loading Orders...
+</div>
+
+</div>
+
+</div>
 
 <script type="module">
 
@@ -158,6 +208,11 @@ where("email","==",user.email)
 
 onSnapshot(q,(snapshot)=>{
 
+let total = 0;
+let completed = 0;
+let processing = 0;
+let rejected = 0;
+
 const ordersContainer =
 document.getElementById("ordersContainer");
 
@@ -182,6 +237,20 @@ let count = 1;
 snapshot.forEach((doc)=>{
 
 const data = doc.data();
+
+total++;
+
+if(data.status=="Completed"){
+completed++;
+}
+
+if(data.status=="Processing"){
+processing++;
+}
+
+if(data.status=="Rejected"){
+rejected++;
+}
 
 let color = "orange";
 
@@ -226,6 +295,18 @@ ${data.status}
 count++;
 
 });
+
+document.getElementById("userEmail").innerHTML = `
+<b>📧 Email:</b> ${user.email}<br><br>
+
+<b>🛒 Total Orders:</b> ${total}<br>
+
+<b style="color:lime;">✅ Completed:</b> ${completed}<br>
+
+<b style="color:orange;">🟠 Processing:</b> ${processing}<br>
+
+<b style="color:red;">❌ Rejected:</b> ${rejected}
+`;
 
 });
 

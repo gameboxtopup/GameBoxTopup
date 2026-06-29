@@ -290,11 +290,11 @@ margin-bottom:35px;
 }
 
 .hero-buttons{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
-gap:15px;
-margin-top:30px;
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-top:25px;
+max-width:430px;
 }
 
 .hero-stats{
@@ -315,14 +315,13 @@ border:1px solid rgba(255,255,255,.12);
 }
 
 .hero-buttons a{
-flex:1 1 180px;
-max-width:220px;
-padding:10px 18px;
+padding:14px;
 text-align:center;
-border-radius:12px;
+border-radius:14px;
 text-decoration:none;
-font-weight:bold;
+font-weight:700;
 font-size:16px;
+transition:.3s;
 }
 
 .start{
@@ -711,14 +710,20 @@ instant delivery, secure payments and trusted support.
 
 <div class="hero-buttons">
 
-<a href="#services" class="start">
-🚀 Top Up Now
+<a href="freefire.html" class="start">
+🎮 Free Fire
 </a>
 
-<a href="https://wa.me/+9779708567948"
-target="_blank"
-class="whatsapp">
-🟢 WhatsApp
+<a href="instagram.html" class="discord">
+📸 Instagram
+</a>
+
+<a href="tiktok.html" class="facebook">
+🎵 TikTok
+</a>
+
+<a href="#services" class="instagram">
+📂 All Services
 </a>
 
 </div>

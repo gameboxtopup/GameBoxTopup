@@ -233,7 +233,10 @@ ordersDiv.innerHTML += `
 
 <p><b>Email:</b> ${order.email}</p>
 
-<p><b>UID:</b> ${order.uid}</p>
+${order.service === "Instagram" || order.service === "TikTok"
+? `<p><b>Profile Link:</b><br>${order.uid}</p>`
+: `<p><b>UID:</b> ${order.uid}</p>`
+}
 
 <p><b>Package:</b> ${order.package}</p>
 

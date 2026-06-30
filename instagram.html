@@ -516,10 +516,8 @@ Instagram Link
 
 
 <input
-
-placeholder="https://instagram.com/..."
-
->
+id="instagramLink"
+placeholder="https://instagram.com/...">
 
 
 
@@ -609,6 +607,8 @@ function calc(){
 
 let qty =
 Number(document.getElementById("qty").value);
+
+
 
 
 let rate =
@@ -721,6 +721,18 @@ document.getElementById("paymentScreenshot").files[0];
 let qty =
 Number(document.getElementById("qty").value);
 
+
+
+let instagramLink =
+document.getElementById("instagramLink").value.trim();
+
+if(instagramLink === ""){
+    alert("Enter Instagram link");
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Submit Payment";
+    return;
+}
+
 if(file && file.size > 8 * 1024 * 1024){
     alert("Screenshot must be under 8MB");
     submitBtn.disabled = false;
@@ -742,7 +754,10 @@ if(!file){
     return;
 }
 
-let price = qty * 0.025;
+let rate =
+Number(document.getElementById("service").value);
+
+let price = qty * rate;
 
 const formData = new FormData();
 formData.append("file", file);
@@ -771,7 +786,8 @@ email: auth.currentUser
 ? auth.currentUser.email
 : "Instagram User",
 
-uid:"Instagram",
+uid: instagramLink,
+link: instagramLink,
 
 package:
 "Instagram Likes " + qty +

@@ -723,8 +723,7 @@ Number(document.getElementById("qty").value);
 
 
 
-let instagramLink =
-document.getElementById("instagramLink").value.trim();
+const instagramLink = document.getElementById("instagramLink").value.trim();
 
 if(instagramLink === ""){
     alert("Enter Instagram link");
@@ -759,6 +758,11 @@ Number(document.getElementById("service").value);
 
 let price = qty * rate;
 
+const serviceName =
+document.getElementById("service").options[
+document.getElementById("service").selectedIndex
+].text;
+
 const formData = new FormData();
 formData.append("file", file);
 formData.append("upload_preset", "gamebox");
@@ -780,26 +784,29 @@ const orderId =
 
 await addDoc(collection(db,"orders"),{
 
-orderId:orderId,
+orderId: orderId,
 
 email: auth.currentUser
 ? auth.currentUser.email
 : "Instagram User",
 
-uid: instagramLink,
-link: instagramLink,
+uid: String(instagramLink),
+
+link: String(instagramLink),
 
 package:
-"Instagram Likes " + qty +
+serviceName +
+" - " + qty +
 " - Rs " + price.toFixed(2),
 
-screenshot:screenshot,
+screenshot: screenshot,
 
-status:"Processing",
+status: "Processing",
 
-time:new Date()
+time: new Date()
 
 });
+
 
 document.body.innerHTML = `
 
@@ -832,7 +839,8 @@ ${orderId}
 </h2>
 
 <p>
-Instagram Likes: ${qty}<br>
+Service: ${serviceName}<br>
+Quantity: ${qty}<br>
 Amount: Rs ${price.toFixed(2)}
 </p>
 
